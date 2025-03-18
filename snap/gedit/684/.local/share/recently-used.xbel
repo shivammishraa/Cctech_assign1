@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xbel version="1.0"
+      xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks"
+      xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info"
+>
+  <bookmark href="file:///home/shivam/hello.cpp" added="2025-03-17T12:30:19.569417Z" modified="2025-03-17T12:41:12.579317Z" visited="2025-03-17T12:30:19.569419Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="text/x-c++src"/>
+        <bookmark:applications>
+          <bookmark:application name="gedit" exec="&apos;gedit %u&apos;" modified="2025-03-17T12:41:12.579316Z" count="6"/>
+        </bookmark:applications>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/shivam/assign1" added="2025-03-17T12:43:36.194205Z" modified="2025-03-17T12:43:36.194214Z" visited="2025-03-17T12:43:36.194205Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="text/plain"/>
+        <bookmark:applications>
+          <bookmark:application name="gedit" exec="&apos;gedit %u&apos;" modified="2025-03-17T12:43:36.194206Z" count="1"/>
+        </bookmark:applications>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/shivam/helloworld.cpp" added="2025-03-17T12:47:05.525079Z" modified="2025-03-17T12:47:12.379269Z" visited="2025-03-17T12:47:05.525080Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="text/x-c++src"/>
+        <bookmark:applications>
+          <bookmark:application name="gedit" exec="&apos;gedit %u&apos;" modified="2025-03-17T12:47:12.379259Z" count="2"/>
+        </bookmark:applications>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/shivam/shivam.cpp" added="2025-03-17T13:25:35.644853Z" modified="2025-03-18T06:35:19.061542Z" visited="2025-03-17T13:25:35.644880Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="text/x-c++src"/>
+        <bookmark:applications>
+          <bookmark:application name="gedit" exec="&apos;gedit %u&apos;" modified="2025-03-18T06:35:19.061538Z" count="4"/>
+        </bookmark:applications>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/shivam/plot.cpp" added="2025-03-17T19:11:25.683451Z" modified="2025-03-18T06:29:43.771470Z" visited="2025-03-17T19:11:25.683456Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="text/x-c++src"/>
+        <bookmark:applications>
+          <bookmark:application name="gedit" exec="&apos;gedit %u&apos;" modified="2025-03-18T06:29:43.771320Z" count="8"/>
+        </bookmark:applications>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/shivam/gnuploy.cpp" added="2025-03-18T06:17:43.669160Z" modified="2025-03-18T06:23:00.910866Z" visited="2025-03-18T06:17:43.669162Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="text/x-c++src"/>
+        <bookmark:applications>
+          <bookmark:application name="gedit" exec="&apos;gedit %u&apos;" modified="2025-03-18T06:23:00.910859Z" count="3"/>
+        </bookmark:applications>
+      </metadata>
+    </info>
+  </bookmark>
+</xbel>
