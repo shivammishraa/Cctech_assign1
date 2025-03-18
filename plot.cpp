@@ -4,7 +4,6 @@
 
 using namespace std;
 
-// Function to generate the data file for plotting
 void generateDataFile(double x1, double y1, double x2, double y2) {
     ofstream file("points.dat");
     if (!file) {
@@ -16,7 +15,6 @@ void generateDataFile(double x1, double y1, double x2, double y2) {
     double m = (y2 - y1) / (x2 - x1); // Slope
     double c = y1 - m * x1;           // Intercept
 
-    // Number of intermediate points (including start and end, total 10)
     int totalPoints = 10;
     
     // Step size for x
@@ -47,14 +45,13 @@ void plotWithGnuplot() {
     fprintf(gnuplotPipe, "set grid\n");
     fprintf(gnuplotPipe, "plot 'points.dat' with linespoints linestyle 1 lw 2 lc rgb 'blue' title 'Line'\n");
 
-    // Close Gnuplot pipe
     pclose(gnuplotPipe);
 }
 
 int main() {
     double x1, y1, x2, y2;
 
-    // Taking input from user
+    // Taking input
     cout << "Enter the first point (x1 y1): ";
     cin >> x1 >> y1;
     cout << "Enter the second point (x2 y2): ";
