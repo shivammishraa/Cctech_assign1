@@ -1,0 +1,7 @@
+all: draw draw2d
+
+draw:
+	g++ 3dline.cpp -o 3dline && ./3dline
+
+draw2d:
+	g++ plot.cpp -o plot_line && ./plot_line
