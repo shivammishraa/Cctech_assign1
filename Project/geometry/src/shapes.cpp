@@ -3,16 +3,26 @@
 
 using namespace std;
 
+// Ensure the dat_files directory exists
+// void ensureDatFilesDirectory() {
+//     string dir = "geometry/dat_files";
+//     if (!filesystem::exists(dir)) {
+//         filesystem::create_directories(dir);
+//     }
+// }
+
 // Template class for Cuboid
 template<typename T>
 Cuboid<T>::Cuboid(Point<T, 3> origin, T length, T breadth, T height)
     : origin(origin), length(length), breadth(breadth), height(height) {}
 
-template<typename T>
+    template<typename T>
 void Cuboid<T>::generate() {
-    ofstream file("geometry/dat_files/cuboid.dat");
+    ensureDatFilesDirectory();
+
+    std::ofstream file("geometry/dat_files/cuboid.dat");
     if (!file) {
-        cerr << "Error opening file" << endl;
+        std::cerr << "Error: Could not open cuboid.dat for writing." << std::endl;
         return;
     }
 
@@ -21,30 +31,46 @@ void Cuboid<T>::generate() {
     T z = origin.coords[2];
 
     // Bottom face
-    file << x << " " << y << " " << z << endl;
-    file << x + length << " " << y << " " << z << endl;
-    file << x + length << " " << y + breadth << " " << z << endl;
-    file << x << " " << y + breadth << " " << z << endl;
-    file << x << " " << y << " " << z << endl << endl;
+    file << x << " " << y << " " << z << std::endl;
+    file << x + length << " " << y << " " << z << std::endl;
+    file << x + length << " " << y + breadth << " " << z << std::endl;
+    file << x << " " << y + breadth << " " << z << std::endl;
+    file << x << " " << y << " " << z << std::endl << std::endl;
 
     // Top face
-    file << x << " " << y << " " << z + height << endl;
-    file << x + length << " " << y << " " << z + height << endl;
-    file << x + length << " " << y + breadth << " " << z + height << endl;
-    file << x << " " << y + breadth << " " << z + height << endl;
-    file << x << " " << y << " " << z + height << endl << endl;
+    file << x << " " << y << " " << z + height << std::endl;
+    file << x + length << " " << y << " " << z + height << std::endl;
+    file << x + length << " " << y + breadth << " " << z + height << std::endl;
+    file << x << " " << y + breadth << " " << z + height << std::endl;
+    file << x << " " << y << " " << z + height << std::endl << std::endl;
+
+    if (file.fail()) {
+        std::cerr << "Error: Failed to write data to cuboid.dat." << std::endl;
+    } else {
+        std::cout << "Debug: Successfully wrote data to cuboid.dat." << std::endl;
+    }
 
     file.close();
+
+    // Debug: Confirm file contents
+    std::ifstream debugFile("geometry/dat_files/cuboid.dat");
+    if (debugFile) {
+        std::cout << "Debug: Contents of cuboid.dat:" << std::endl;
+        std::cout << debugFile.rdbuf() << std::endl;
+    } else {
+        std::cerr << "Error: cuboid.dat was not created successfully." << std::endl;
+    }
 }
 
-// Function to translate a cuboid
 template<typename T>
 void Cuboid<T>::translate(T dx, T dy, T dz) {
-    ifstream fileIn("geometry/dat_files/cuboid.dat");
-    ofstream fileOut("geometry/dat_files/cuboid_translated.dat");
+    ensureDatFilesDirectory();
+
+    std::ifstream fileIn("geometry/dat_files/cuboid.dat");
+    std::ofstream fileOut("geometry/dat_files/cuboid_translated.dat");
 
     if (!fileIn || !fileOut) {
-        cerr << "Error opening cuboid files" << endl;
+        std::cerr << "Error: Could not open cuboid files for reading/writing." << std::endl;
         return;
     }
 
@@ -58,38 +84,39 @@ void Cuboid<T>::translate(T dx, T dy, T dz) {
     }
 
     if (i < 8) {
-        cerr << "Error: Not enough points read from cuboid.dat!" << endl;
+        std::cerr << "Error: Not enough points read from cuboid.dat!" << std::endl;
         return;
     }
 
     // **Write bottom face**
     for (int j = 0; j < 4; j++) {
-        fileOut << (x[j] + dx) << " " << (y[j] + dy) << " " << (z[j] + dz) << endl;
+        fileOut << (x[j] + dx) << " " << (y[j] + dy) << " " << (z[j] + dz) << std::endl;
     }
-    fileOut << (x[0] + dx) << " " << (y[0] + dy) << " " << (z[0] + dz) << endl;  // Close loop
-    fileOut << endl;
+    fileOut << (x[0] + dx) << " " << (y[0] + dy) << " " << (z[0] + dz) << std::endl;  // Close loop
+    fileOut << std::endl;
 
     // **Write top face**
     for (int j = 4; j < 8; j++) {
-        fileOut << (x[j] + dx) << " " << (y[j] + dy) << " " << (z[j] + dz) << endl;
+        fileOut << (x[j] + dx) << " " << (y[j] + dy) << " " << (z[j] + dz) << std::endl;
     }
-    fileOut << (x[4] + dx) << " " << (y[4] + dy) << " " << (z[4] + dz) << endl;  // Close loop
-    fileOut << endl;
+    fileOut << (x[4] + dx) << " " << (y[4] + dy) << " " << (z[4] + dz) << std::endl;  // Close loop
+    fileOut << std::endl;
 
     // **Write vertical edges**
     for (int j = 0; j < 4; j++) {
-        fileOut << (x[j] + dx) << " " << (y[j] + dy) << " " << (z[j] + dz) << endl;
-        fileOut << (x[j + 4] + dx) << " " << (y[j + 4] + dy) << " " << (z[j + 4] + dz) << endl;
-        fileOut << endl;
+        fileOut << (x[j] + dx) << " " << (y[j] + dy) << " " << (z[j] + dz) << std::endl;
+        fileOut << (x[j + 4] + dx) << " " << (y[j + 4] + dy) << " " << (z[j + 4] + dz) << std::endl;
+        fileOut << std::endl;
+    }
+
+    if (fileOut.fail()) {
+        std::cerr << "Error: Failed to write data to cuboid_translated.dat." << std::endl;
+    } else {
+        std::cout << "Debug: Successfully wrote data to cuboid_translated.dat." << std::endl;
     }
 
     fileIn.close();
     fileOut.close();
-    cout << "Debug: Translated cuboid written to cuboid_translated.dat!" << endl;
 }
-
-
-
-
 // Explicit template instantiation
 template class Cuboid<double>;

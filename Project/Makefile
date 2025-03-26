@@ -13,7 +13,7 @@ BIN_DIR = $(APPLICATION_DIR)/bin
 INCLUDE = -I$(GEOMETRY_DIR)/include
 
 # Object files
-GEOMETRY_OBJ = $(GEOMETRY_DIR)/src/logic.o $(GEOMETRY_DIR)/src/shapes.o $(GEOMETRY_DIR)/src/cylinder.o
+GEOMETRY_OBJ = $(GEOMETRY_DIR)/src/logic.o $(GEOMETRY_DIR)/src/shapes.o $(GEOMETRY_DIR)/src/cylinder.o $(GEOMETRY_DIR)/src/sphere.o
 APPLICATION_OBJ = $(APPLICATION_DIR)/src/main.o
 
 # Targets

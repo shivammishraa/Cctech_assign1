@@ -7,7 +7,17 @@
 #include <string>
 #include <sstream>
 #include <filesystem>
+#include <cmath>
 
+// Ensure the dat_files directory exists
+inline void ensureDatFilesDirectory() {
+    std::string dir = "geometry/dat_files";
+    if (!std::filesystem::exists(dir)) {
+        std::filesystem::create_directories(dir);
+    }
+}
+
+// Point class for handling N-dimensional points
 template<typename T, size_t N>
 class Point {
 public:
@@ -48,6 +58,7 @@ public:
     }
 };
 
+// DataFile class for handling file operations
 template<typename T, size_t N>
 class DataFile {
 public:
@@ -122,7 +133,20 @@ public:
     }
 };
 
-template<typename T, size_t N>
+// Utility function to convert spherical coordinates to Cartesian coordinates
+template <typename T>
+std::array<T, 3> sphericalToCartesian(T radius, T theta, T phi, const std::array<T, 3>& center) {
+    T x = center[0] + radius * sin(theta) * cos(phi);
+    T y = center[1] + radius * sin(theta) * sin(phi);
+    T z = center[2] + radius * cos(theta);
+    return {x, y, z};
+}
+
+// Constants for default sphere segments
+const int DEFAULT_LAT_SEGMENTS = 18; // Default number of latitude segments
+const int DEFAULT_LON_SEGMENTS = 36; // Default number of longitude segments
+
+// GnuPlotting class (not a template)
 class GnuPlotting {
 public:
     void plot();
