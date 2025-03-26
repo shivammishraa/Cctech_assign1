@@ -7,7 +7,6 @@
 
 using namespace std;
 
-// Template class for Points
 template<typename T, size_t N>
 class Point {
 public:
@@ -16,24 +15,28 @@ public:
     void input();
 };
 
-// Template class for DataFile
 template<typename T, size_t N>
 class DataFile {
 public:
     void generate(const Point<T, N>& p1, const Point<T, N>& p2);
+    void generatePolyline(int numPoints);
+    void translatePolyline(int numPoints, const array<T, N>& displacement);
 };
 
-// Template class for GnuPlotting
 template<typename T, size_t N>
 class GnuPlotting {
 public:
     void plot();
+    void plotTranslated();
 };
 
-// Function to plot cuboids (implemented in logic.cpp)
+// Function declarations for cuboid operations
+void translateCuboid(double dx, double dy, double dz);
 void plotCuboid();
+void plotTranslatedCuboid();
+void plotTranslatedPolyline();
 
-// Explicit template instantiations
+// Explicit template instantiations for double precision (2D and 3D)
 extern template class Point<double, 2>;
 extern template class Point<double, 3>;
 extern template class DataFile<double, 2>;
@@ -41,4 +44,5 @@ extern template class DataFile<double, 3>;
 extern template class GnuPlotting<double, 2>;
 extern template class GnuPlotting<double, 3>;
 
-#endif // LOGIC_H
+
+#endif
