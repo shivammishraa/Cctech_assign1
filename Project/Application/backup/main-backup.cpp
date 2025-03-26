@@ -1,6 +1,7 @@
 #include <iostream>
-#include "../../geometry/include/shapes.h"  
+#include "../../geometry/include/shapes.h"
 #include "../../geometry/include/logic.h"
+#include "../../geometry/include/cylinder.h"
 
 using namespace std;
 
@@ -9,92 +10,71 @@ int main() {
     cout << "Choose an option:\n1. Shape\n2. Line\n";
     cin >> choice;
 
-    if (choice == 1) {
-        cout << "Choose shape:\n1. Cuboid\n";
+    if (choice == 1) { // **Shape Selection**
+        cout << "Choose shape:\n1. Cuboid\n2. Cylinder\n";
         int shapeChoice;
         cin >> shapeChoice;
 
-        if (shapeChoice == 1) {
-            Point<double, 3> origin;
-            double length, breadth, height;
+        if (shapeChoice == 2) { // **Cylinder Handling**
+            Point<double, 3> center;
+            double radius, height;
+            int segments;
 
-            cout << "Enter origin (x y z): ";
-            origin.input();
-            cout << "Enter length, breadth, height: ";
-            cin >> length >> breadth >> height;
+            cout << "Enter center (x y z): ";
+            center.input();
+            cout << "Enter radius and height: ";
+            cin >> radius >> height;
+            cout << "Enter the number of segments for the cylinder: ";
+            cin >> segments;
 
-            Cuboid<double> cuboid(origin, length, breadth, height);
-            cuboid.generate();
-            plotCuboid();
+            Cylinder<double> cylinder(radius, height, segments, center);
 
-            // Translation
-            double dx, dy, dz;
-            cout << "Enter translation values (dx dy dz): ";
-            cin >> dx >> dy >> dz;
+            // Plot the original cylinder
+            system("gnuplot -p -e \"set terminal wxt; splot '../../geometry/dat_files/cylinder.dat' with lines\"");
 
-            translateCuboid(dx, dy, dz);
-            plotTranslatedCuboid();
-        }
-    } else if (choice == 2) {
-        int dimensions;
-        cout << "Enter the dimensions (2 or 3): ";
-        cin >> dimensions;
+            char transformationChoice;
 
-        if (dimensions == 2 || dimensions == 3) {
-            int lineType;
-            cout << "Choose line type:\n1. Straight Line\n2. Polyline\n";
-            cin >> lineType;
+            // **Translation**
+            cout << "Do you want to translate the cylinder? (y/n): ";
+            cin >> transformationChoice;
+            if (transformationChoice == 'y' || transformationChoice == 'Y') {
+                double dx, dy, dz;
+                cout << "Enter translation values (dx dy dz): ";
+                cin >> dx >> dy >> dz;
+                cylinder.translate(dx, dy, dz);
 
-            // Create objects for data file handling and plotting
-            DataFile<double, 2> generator2D;
-            DataFile<double, 3> generator3D;
-            GnuPlotting<double, 2> plotter2D;
-            GnuPlotting<double, 3> plotter3D;
+                // Plot the translated cylinder
+                system("gnuplot -p -e \"set terminal wxt; splot '../../geometry/dat_files/cylinder_translated.dat' with lines\"");
+            }
 
-            if (lineType == 1) { // Straight Line
-                if (dimensions == 2) {
-                    Point<double, 2> p1, p2;
-                    cout << "Enter two points (x1 y1) (x2 y2): ";
-                    p1.input();
-                    p2.input();
-                    generator2D.generate(p1, p2);
-                    plotter2D.plot();
-                } else {
-                    Point<double, 3> p1, p2;
-                    cout << "Enter two points (x1 y1 z1) (x2 y2 z2): ";
-                    p1.input();
-                    p2.input();
-                    generator3D.generate(p1, p2);
-                    plotter3D.plot();
-                }
-            } else if (lineType == 2) { // Polyline
-                int numPoints;
-                cout << "Enter number of Points in the Polyline: ";
-                cin >> numPoints;
+            // **Rotation**
+            cout << "Do you want to rotate the cylinder? (y/n): ";
+            cin >> transformationChoice;
+            if (transformationChoice == 'y' || transformationChoice == 'Y') {
+                double angle;
+                char axis;
+                cout << "Enter rotation angle (degrees): ";
+                cin >> angle;
+                cout << "Enter rotation axis (x, y, z): ";
+                cin >> axis;
 
-                if (dimensions == 2) {
-                    generator2D.generatePolyline(numPoints);
-                    plotter2D.plot();
+                cylinder.rotate(angle, axis);
 
-                    // Translation
-                    double dx, dy;
-                    cout << "Enter translation values (dx dy): ";
-                    cin >> dx >> dy;
+                // Plot the rotated cylinder
+                system("gnuplot -p -e \"set terminal wxt; splot '../../geometry/dat_files/cylinder_rotated.dat' with lines\"");
+            }
 
-                    generator2D.translatePolyline(numPoints, {dx, dy});
-                    plotter2D.plotTranslated();
-                } else {
-                    generator3D.generatePolyline(numPoints);
-                    plotter3D.plot();
+            // **Scaling**
+            cout << "Do you want to scale the cylinder? (y/n): ";
+            cin >> transformationChoice;
+            if (transformationChoice == 'y' || transformationChoice == 'Y') {
+                double factor;
+                cout << "Enter scaling factor: ";
+                cin >> factor;
+                cylinder.scale(factor);
 
-                    // Translation
-                    double dx, dy, dz;
-                    cout << "Enter translation values (dx dy dz): ";
-                    cin >> dx >> dy >> dz;
-
-                    generator3D.translatePolyline(numPoints, {dx, dy, dz});
-                    plotter3D.plotTranslated();
-                }
+                // Plot the scaled cylinder
+                system("gnuplot -p -e \"set terminal wxt; splot '../../geometry/dat_files/cylinder_scaled.dat' with lines\"");
             }
         }
     }
