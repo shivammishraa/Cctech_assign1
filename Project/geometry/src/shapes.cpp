@@ -1,6 +1,8 @@
 #include "../include/shapes.h"
 #include <filesystem>
 
+using namespace std;
+
 // Template class for Cuboid
 template<typename T>
 Cuboid<T>::Cuboid(Point<T, 3> origin, T length, T breadth, T height)
