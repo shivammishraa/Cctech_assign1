@@ -47,11 +47,13 @@ void Cuboid::rotate(double angle, char axis) {
 }
 
 void Cuboid::saveToFile(const string &filename) {
-    ofstream file(filename);
+    ofstream file(filename, ios::app); // Open in append mode
     if (!file) {
         cerr << "Error: Cannot open file for writing.\n";
         return;
     }
+
+    cout << "Writing cuboid edges to file: " << filename << endl;
 
     // Define edges of the cuboid
     int edges[12][2] = {
@@ -60,14 +62,16 @@ void Cuboid::saveToFile(const string &filename) {
         {0, 4}, {1, 5}, {2, 6}, {3, 7}  // Vertical edges
     };
 
+    // Write each edge as a pair of points, followed by a blank line
     for (int i = 0; i < 12; i++) {
         int v1 = edges[i][0], v2 = edges[i][1];
         file << vertices[v1][0] << " " << vertices[v1][1] << " " << vertices[v1][2] << "\n";
         file << vertices[v2][0] << " " << vertices[v2][1] << " " << vertices[v2][2] << "\n";
-        file << "\n"; // Separate each edge
+        file << "\n"; // Add a blank line to separate edges
     }
 
     file.close();
+    cout << "Finished writing cuboid edges to file." << endl;
 }
 
 void Cuboid::loadFromFile(const string &filename) {

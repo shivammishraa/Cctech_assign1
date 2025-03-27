@@ -66,7 +66,7 @@ void Bezier::addControlPoint(double x, double y, double z) {
     controlPoints.push_back({x, y, z});
 }
 
-vector<vector<double>> Bezier::calculateBezierCurve(int numSegments) {
+vector<vector<double>> Bezier::calculateBezierCurve(int numSegments) const {
     vector<vector<double>> curve;
     int n = controlPoints.size() - 1;
 
@@ -136,4 +136,23 @@ void Bezier::scale(double sx, double sy, double sz) {
         point[1] *= sy;
         point[2] *= sz;
     }
+}
+
+void Bezier::saveToFile(const string &filename) const {
+    ofstream file(filename, ios::app); // Open in append mode
+    if (!file) {
+        cerr << "Error: Cannot open file for writing.\n";
+        return;
+    }
+
+    cout << "Writing Bezier control points to file: " << filename << endl; // Debugging statement
+
+    // Write Bezier control points
+    for (size_t i = 0; i < controlPoints.size() - 1; i++) {
+        file << controlPoints[i][0] << " " << controlPoints[i][1] << " " << controlPoints[i][2] << "\n";
+        file << controlPoints[i + 1][0] << " " << controlPoints[i + 1][1] << " " << controlPoints[i + 1][2] << "\n\n";
+    }
+
+    file.close();
+    cout << "Finished writing Bezier control points to file." << endl; // Debugging statement
 }

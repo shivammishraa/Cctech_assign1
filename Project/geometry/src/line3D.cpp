@@ -82,3 +82,17 @@ void Line3D::rotate(double angle, char axis) {
         }
     }
 }
+
+void Line3D::saveToFile(const std::string& filename) const {
+    std::ofstream file(filename, std::ios::app); // Open in append mode
+    if (!file) {
+        std::cerr << "Error: Cannot open file " << filename << " for writing.\n";
+        return;
+    }
+
+    for (const auto& point : points) {
+        file << point[0] << " " << point[1] << " " << point[2] << "\n";
+    }
+    file << "\n"; // Add a blank line to separate shapes
+    file.close();
+}

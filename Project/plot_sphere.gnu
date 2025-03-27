@@ -9,4 +9,4 @@ set ylabel 'Y'
 set zlabel 'Z'
 set view equal xyz
 r = 5
-splot r*sin(v)*cos(u), r*sin(v)*sin(u), r*cos(v) with lines
+splot 'data/transformed_sphere.dat' with points pointtype 7 linecolor 'blue'

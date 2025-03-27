@@ -1,4 +1,7 @@
 #include "cylinder.h"
+#include <fstream>
+#include <cmath>
+#include <iostream>
 
 using namespace std;
 
@@ -25,22 +28,26 @@ void Cylinder::generateVertices() {
 }
 
 void Cylinder::saveToFile(const string &filename) {
-    ofstream file(filename);
+    ofstream file(filename, ios::app); // Open in append mode
     if (!file) {
         cerr << "Error: Cannot open file for writing.\n";
         return;
     }
 
-    // Write bottom circle
+    cout << "Writing cylinder edges to file: " << filename << endl;
+
+    // Write bottom circle edges
     for (int i = 0; i < resolution; i++) {
+        int next = (i + 1) % resolution;
         file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n";
-        file << vertices[(i + 1) % resolution][0] << " " << vertices[(i + 1) % resolution][1] << " " << vertices[(i + 1) % resolution][2] << "\n\n";
+        file << vertices[next][0] << " " << vertices[next][1] << " " << vertices[next][2] << "\n\n";
     }
 
-    // Write top circle
+    // Write top circle edges
     for (int i = resolution; i < 2 * resolution; i++) {
+        int next = (i + 1) % resolution + resolution;
         file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n";
-        file << vertices[(i + 1) % resolution + resolution][0] << " " << vertices[(i + 1) % resolution + resolution][1] << " " << vertices[(i + 1) % resolution + resolution][2] << "\n\n";
+        file << vertices[next][0] << " " << vertices[next][1] << " " << vertices[next][2] << "\n\n";
     }
 
     // Write vertical edges
@@ -50,6 +57,7 @@ void Cylinder::saveToFile(const string &filename) {
     }
 
     file.close();
+    cout << "Finished writing cylinder edges to file." << endl;
 }
 
 void Cylinder::plotCylinder(const string &filename) {

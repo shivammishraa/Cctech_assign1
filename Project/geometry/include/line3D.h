@@ -19,6 +19,7 @@ public:
     void translate(double dx, double dy, double dz);
     void scale(double sx, double sy, double sz);
     void rotate(double angle, char axis);
+    void saveToFile(const std::string& filename) const;
 };
 
 #endif // LINE3D_H

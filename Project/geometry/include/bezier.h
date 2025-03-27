@@ -17,7 +17,8 @@ public:
     void translate(double dx, double dy, double dz); // Using Eigen
     void scale(double sx, double sy, double sz);
     void rotate(double angle, char axis);
-    vector<vector<double>> calculateBezierCurve(int numSegments);
+    vector<vector<double>> calculateBezierCurve(int numSegments) const;
+    void saveToFile(const std::string& filename) const;
 };
 
 #endif

@@ -1,20 +1,26 @@
 #include "sphere.h"
 #include <fstream>
 #include <cmath>
+#include <iostream>
 
 using namespace std;
 
 Sphere::Sphere(double r, int seg) : radius(r), segments(seg) {
-    for (int i = 0; i <= segments; i++) {
-        double theta = M_PI * i / segments;
-        for (int j = 0; j < 2 * segments; j++) {
-            double phi = 2 * M_PI * j / (2 * segments);
+    cout << "Generating sphere vertices..." << endl;
+
+    // Generate vertices for the sphere
+    for (int i = 0; i <= segments; i++) { // Latitude
+        double theta = M_PI * i / segments; // From 0 to pi
+        for (int j = 0; j <= segments; j++) { // Longitude
+            double phi = 2 * M_PI * j / segments; // From 0 to 2*pi
             double x = radius * sin(theta) * cos(phi);
             double y = radius * sin(theta) * sin(phi);
             double z = radius * cos(theta);
             vertices.push_back({x, y, z});
         }
     }
+
+    cout << "Generated " << vertices.size() << " vertices for the sphere." << endl;
 }
 
 void Sphere::plotSphere(const string& filename) {
@@ -38,8 +44,26 @@ void Sphere::plotSphere(const string& filename) {
     gnuplotFile << "r = " << radius << "\n";
     gnuplotFile << "splot '" << filename << "' with points pointtype 7 linecolor 'blue'\n";
     gnuplotFile.close();
-
     system("gnuplot -p plot_sphere.gnu");
+}
+
+void Sphere::saveToFile(const string& filename) const {
+    ofstream file(filename, ios::app); // Open in append mode
+    if (!file) {
+        cerr << "Error: Cannot open file for writing.\n";
+        return;
+    }
+
+    cout << "Writing sphere vertices to file: " << filename << endl;
+
+    // Write sphere vertices
+    for (const auto& vertex : vertices) {
+        file << vertex[0] << " " << vertex[1] << " " << vertex[2] << "\n";
+    }
+    file << "\n"; // Add a blank line to separate shapes
+
+    file.close();
+    cout << "Finished writing sphere vertices to file." << endl;
 }
 
 void Sphere::translate(double dx, double dy, double dz) {

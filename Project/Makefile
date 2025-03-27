@@ -10,7 +10,7 @@ GEOM_SRC_DIR = geometry/src
 GEOM_INC_DIR = geometry/include
 
 # Object files
-OBJ = $(SRC_DIR)/main.o $(GEOM_SRC_DIR)/cuboid.o $(GEOM_SRC_DIR)/cylinder.o $(GEOM_SRC_DIR)/sphere.o $(GEOM_SRC_DIR)/polyline.o $(GEOM_SRC_DIR)/bezier.o $(GEOM_SRC_DIR)/triangle.o $(GEOM_SRC_DIR)/polygon.o $(GEOM_SRC_DIR)/line3D.o	
+OBJ = $(SRC_DIR)/main.o $(GEOM_SRC_DIR)/cuboid.o $(GEOM_SRC_DIR)/cylinder.o $(GEOM_SRC_DIR)/sphere.o $(GEOM_SRC_DIR)/polyline.o $(GEOM_SRC_DIR)/bezier.o $(GEOM_SRC_DIR)/triangle.o $(GEOM_SRC_DIR)/polygon.o $(GEOM_SRC_DIR)/line3D.o $(GEOM_SRC_DIR)/scene.o
 
 # Executable
 TARGET = $(BIN_DIR)/shape_plotter
@@ -20,7 +20,7 @@ $(TARGET): $(OBJ)
 	$(CXX) $(OBJ) -o $(TARGET) -lm
 
 # Compile main.cpp
-$(SRC_DIR)/main.o: $(SRC_DIR)/main.cpp $(GEOM_INC_DIR)/cuboid.h $(GEOM_INC_DIR)/cylinder.h $(GEOM_INC_DIR)/polyline.h $(GEOM_INC_DIR)/bezier.h $(GEOM_INC_DIR)/triangle.h $(GEOM_INC_DIR)/polygon.h $(GEOM_INC_DIR)/line3D.h
+$(SRC_DIR)/main.o: $(SRC_DIR)/main.cpp $(GEOM_INC_DIR)/cuboid.h $(GEOM_INC_DIR)/cylinder.h $(GEOM_INC_DIR)/polyline.h $(GEOM_INC_DIR)/bezier.h $(GEOM_INC_DIR)/triangle.h $(GEOM_INC_DIR)/polygon.h $(GEOM_INC_DIR)/line3D.h $(GEOM_INC_DIR)/scene.h
 	$(CXX) $(CXXFLAGS) -c $(SRC_DIR)/main.cpp -o $(SRC_DIR)/main.o
 
 # Compile cuboid.cpp
@@ -54,6 +54,10 @@ $(GEOM_SRC_DIR)/polygon.o: $(GEOM_SRC_DIR)/polygon.cpp $(GEOM_INC_DIR)/polygon.h
 # Compile line3D.cpp
 $(GEOM_SRC_DIR)/line3D.o: $(GEOM_SRC_DIR)/line3D.cpp $(GEOM_INC_DIR)/line3D.h
 	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/line3D.cpp -o $(GEOM_SRC_DIR)/line3D.o
+
+# Compile scene.cpp
+$(GEOM_SRC_DIR)/scene.o: $(GEOM_SRC_DIR)/scene.cpp $(GEOM_INC_DIR)/scene.h
+	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/scene.cpp -o $(GEOM_SRC_DIR)/scene.o
 
 # Clean build files
 clean:

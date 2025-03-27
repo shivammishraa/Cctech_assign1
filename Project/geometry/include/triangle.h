@@ -21,6 +21,7 @@ public:
     void scale(double sx, double sy, double sz);
     void rotate(double angle, char axis, double Px, double Py, double Pz);
     void plotTriangle(const string& filename);
+    void saveToFile(const std::string& filename) const;
 };
 
 #endif

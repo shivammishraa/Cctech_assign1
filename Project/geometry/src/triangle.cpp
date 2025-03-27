@@ -14,9 +14,6 @@ void Triangle::translate(double dx, double dy, double dz) {
         v[1] += dy;
         v[2] += dz;
     }
-
-
-    
 }
 
 void Triangle::scale(double sx, double sy, double sz) {
@@ -83,4 +80,27 @@ void Triangle::plotTriangle(const string& filename) {
     if (result != 0) {
         cerr << "Error: Failed to execute GNUPLOT command." << endl;
     }
+}
+
+void Triangle::saveToFile(const string &filename) const {
+    ofstream file(filename, ios::app); // Open in append mode
+    if (!file) {
+        cerr << "Error: Cannot open file for writing.\n";
+        return;
+    }
+
+    cout << "Writing triangle vertices to file: " << filename << endl; // Debugging statement
+
+    // Write triangle edges
+    file << vertices[0][0] << " " << vertices[0][1] << " " << vertices[0][2] << "\n";
+    file << vertices[1][0] << " " << vertices[1][1] << " " << vertices[1][2] << "\n\n";
+
+    file << vertices[1][0] << " " << vertices[1][1] << " " << vertices[1][2] << "\n";
+    file << vertices[2][0] << " " << vertices[2][1] << " " << vertices[2][2] << "\n\n";
+
+    file << vertices[2][0] << " " << vertices[2][1] << " " << vertices[2][2] << "\n";
+    file << vertices[0][0] << " " << vertices[0][1] << " " << vertices[0][2] << "\n\n";
+
+    file.close();
+    cout << "Finished writing triangle vertices to file." << endl; // Debugging statement
 }

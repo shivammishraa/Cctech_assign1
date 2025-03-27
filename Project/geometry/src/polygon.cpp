@@ -94,3 +94,23 @@ void Polygon::rotate(double angle, char axis) {
         }
     }
 }
+
+void Polygon::saveToFile(const string &filename) const {
+    ofstream file(filename, ios::app); // Open in append mode
+    if (!file) {
+        cerr << "Error: Cannot open file for writing.\n";
+        return;
+    }
+
+    cout << "Writing polygon vertices to file: " << filename << endl; // Debugging statement
+
+    // Write polygon edges
+    for (size_t i = 0; i < vertices.size(); i++) {
+        size_t next = (i + 1) % vertices.size();
+        file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n";
+        file << vertices[next][0] << " " << vertices[next][1] << " " << vertices[next][2] << "\n\n";
+    }
+
+    file.close();
+    cout << "Finished writing polygon vertices to file." << endl; // Debugging statement
+}
