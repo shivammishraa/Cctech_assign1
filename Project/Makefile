@@ -1,50 +1,64 @@
 # Compiler
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17 -fPIC
+CXXFLAGS = -Wall -std=c++11 -Igeometry/include
 
-# Paths
-GEOMETRY_DIR = geometry
-APPLICATION_DIR = Application
-LIB_DIR = $(GEOMETRY_DIR)/lib
-SRC_DIR = src
-BIN_DIR = $(APPLICATION_DIR)/bin
-
-# Include paths
-INCLUDE = -I$(GEOMETRY_DIR)/include
+# Directories
+BIN_DIR = bin
+DATA_DIR = data
+SRC_DIR = application/src
+GEOM_SRC_DIR = geometry/src
+GEOM_INC_DIR = geometry/include
 
 # Object files
-GEOMETRY_OBJ = $(GEOMETRY_DIR)/src/logic.o $(GEOMETRY_DIR)/src/shapes.o $(GEOMETRY_DIR)/src/cylinder.o $(GEOMETRY_DIR)/src/sphere.o
-APPLICATION_OBJ = $(APPLICATION_DIR)/src/main.o
+OBJ = $(SRC_DIR)/main.o $(GEOM_SRC_DIR)/cuboid.o $(GEOM_SRC_DIR)/cylinder.o $(GEOM_SRC_DIR)/sphere.o $(GEOM_SRC_DIR)/polyline.o $(GEOM_SRC_DIR)/bezier.o $(GEOM_SRC_DIR)/triangle.o $(GEOM_SRC_DIR)/polygon.o $(GEOM_SRC_DIR)/line3D.o	
 
-# Targets
-LIBRARY = $(LIB_DIR)/libgeometry.so
-EXECUTABLE = $(BIN_DIR)/app
+# Executable
+TARGET = $(BIN_DIR)/shape_plotter
 
-# Rule to build everything
-all: $(LIBRARY) $(EXECUTABLE)
+# Build the final executable
+$(TARGET): $(OBJ)
+	$(CXX) $(OBJ) -o $(TARGET) -lm
 
-# Compile Geometry (Library)
-$(GEOMETRY_DIR)/src/%.o: $(GEOMETRY_DIR)/src/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
+# Compile main.cpp
+$(SRC_DIR)/main.o: $(SRC_DIR)/main.cpp $(GEOM_INC_DIR)/cuboid.h $(GEOM_INC_DIR)/cylinder.h $(GEOM_INC_DIR)/polyline.h $(GEOM_INC_DIR)/bezier.h $(GEOM_INC_DIR)/triangle.h $(GEOM_INC_DIR)/polygon.h $(GEOM_INC_DIR)/line3D.h
+	$(CXX) $(CXXFLAGS) -c $(SRC_DIR)/main.cpp -o $(SRC_DIR)/main.o
 
-# Create shared library
-$(LIBRARY): $(GEOMETRY_OBJ)
-	mkdir -p $(LIB_DIR)
-	$(CXX) -shared -o $@ $^
+# Compile cuboid.cpp
+$(GEOM_SRC_DIR)/cuboid.o: $(GEOM_SRC_DIR)/cuboid.cpp $(GEOM_INC_DIR)/cuboid.h
+	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/cuboid.cpp -o $(GEOM_SRC_DIR)/cuboid.o
 
-# Compile Application
-$(APPLICATION_DIR)/src/%.o: $(APPLICATION_DIR)/src/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
+# Compile cylinder.cpp
+$(GEOM_SRC_DIR)/cylinder.o: $(GEOM_SRC_DIR)/cylinder.cpp $(GEOM_INC_DIR)/cylinder.h
+	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/cylinder.cpp -o $(GEOM_SRC_DIR)/cylinder.o
 
-# Link Application with Geometry Library
-$(EXECUTABLE): $(APPLICATION_OBJ) $(LIBRARY)
-	mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $@ $(APPLICATION_OBJ) -L$(LIB_DIR) -lgeometry -Wl,-rpath=$(LIB_DIR)
+# Compile sphere.cpp
+$(GEOM_SRC_DIR)/sphere.o: $(GEOM_SRC_DIR)/sphere.cpp $(GEOM_INC_DIR)/sphere.h
+	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/sphere.cpp -o $(GEOM_SRC_DIR)/sphere.o
 
-# Clean compiled files
+# Compile polyline.cpp
+$(GEOM_SRC_DIR)/polyline.o: $(GEOM_SRC_DIR)/polyline.cpp $(GEOM_INC_DIR)/polyline.h
+	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/polyline.cpp -o $(GEOM_SRC_DIR)/polyline.o
+
+# Compile bezier.cpp
+$(GEOM_SRC_DIR)/bezier.o: $(GEOM_SRC_DIR)/bezier.cpp $(GEOM_INC_DIR)/bezier.h
+	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/bezier.cpp -o $(GEOM_SRC_DIR)/bezier.o
+
+# Compile triangle.cpp
+$(GEOM_SRC_DIR)/triangle.o: $(GEOM_SRC_DIR)/triangle.cpp $(GEOM_INC_DIR)/triangle.h
+	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/triangle.cpp -o $(GEOM_SRC_DIR)/triangle.o
+
+# Compile polygon.cpp
+$(GEOM_SRC_DIR)/polygon.o: $(GEOM_SRC_DIR)/polygon.cpp $(GEOM_INC_DIR)/polygon.h
+	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/polygon.cpp -o $(GEOM_SRC_DIR)/polygon.o
+
+# Compile line3D.cpp
+$(GEOM_SRC_DIR)/line3D.o: $(GEOM_SRC_DIR)/line3D.cpp $(GEOM_INC_DIR)/line3D.h
+	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/line3D.cpp -o $(GEOM_SRC_DIR)/line3D.o
+
+# Clean build files
 clean:
-	rm -f $(GEOMETRY_OBJ) $(APPLICATION_OBJ) $(LIBRARY) $(EXECUTABLE)
+	rm -f $(SRC_DIR)/*.o $(GEOM_SRC_DIR)/*.o $(TARGET)
 
-# Run the application
-run: $(EXECUTABLE)
-	./$(EXECUTABLE)
+# Build and run the project
+run: $(TARGET)
+	./$(TARGET)

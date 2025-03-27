@@ -1,30 +1,22 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include "logic.h"
 #include <vector>
-#include <fstream>
-#include <cmath>
+#include <string>
 
-template <class T>
+using namespace std;
+
 class Sphere {
 private:
-    T radius;
-    Point<T, 3> center;
-    int latSegments; // Number of latitude segments
-    int lonSegments; // Number of longitude segments
-    std::vector<Point<T, 3>> points; // Stores points on the sphere
+    double radius;
+    int segments;
+    vector<vector<double>> vertices;
 
 public:
-    Sphere(T radius, const Point<T, 3>& center, int latSegments, int lonSegments)
-        : radius(radius), center(center), latSegments(latSegments), lonSegments(lonSegments) {
-        generateSphere();
-    }
-
-    void generateSphere();
-    void translate(T dx, T dy, T dz);
-    void scale(T factor);
-    void writeToFile(const std::string& filename) const;
+    Sphere(double r, int seg);
+    void plotSphere(const string& filename);
+    void translate(double dx, double dy, double dz);
+    void scale(double factor);
 };
 
 #endif

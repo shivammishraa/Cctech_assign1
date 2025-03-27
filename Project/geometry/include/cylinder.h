@@ -1,30 +1,29 @@
 #ifndef CYLINDER_H
 #define CYLINDER_H
 
-#include "logic.h"
+#include <iostream>
 #include <vector>
+#include <fstream>
+#include <cmath>
 
-template <class T>
+using namespace std;
+
 class Cylinder {
 private:
-    T radius, height;
-    int segments;
-    Point<T, 3> center;
-    std::vector<Point<T, 3>> baseCircle; // Stores points of the base circle
-    std::vector<Point<T, 3>> topCircle;  // Stores points of the top circle
+    double radius, height;
+    int resolution; // Number of points in the circular base
+    vector<vector<double>> vertices;
 
 public:
-    Cylinder(T radius, T height, int segments, const Point<T, 3>& center)
-        : radius(radius), height(height), segments(segments), center(center) {
-        baseCircle.resize(segments); // Allocate memory for baseCircle
-        topCircle.resize(segments); // Allocate memory for topCircle
-        generateCylinder();
-    }
+    Cylinder(double r, double h, int res);
+    
+    void generateVertices();
+    void saveToFile(const string &filename);
+    void plotCylinder(const string &filename);
+    void translate(double dx, double dy, double dz);
+    void scale(double sx, double sy, double sz);
+    void rotate(double angle, char axis);
 
-    void generateCylinder();
-    void translate(T dx, T dy, T dz);
-    void rotate(T angleDeg, char axis); // Updated declaration to include axis
-    void scale(T factor);
 };
 
 #endif
