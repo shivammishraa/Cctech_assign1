@@ -53,7 +53,7 @@ void Cuboid::saveToFile(const string &filename) {
         return;
     }
 
-    // Define edges between vertices
+    // Define edges of the cuboid
     int edges[12][2] = {
         {0, 1}, {1, 2}, {2, 3}, {3, 0}, // Bottom face
         {4, 5}, {5, 6}, {6, 7}, {7, 4}, // Top face

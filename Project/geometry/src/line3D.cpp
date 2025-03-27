@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// Constructor initializes a line with two empty points
+// Constructor to initialize the two endpoints of the line
 Line3D::Line3D() {
     points.resize(2, vector<double>(3, 0.0));
 }
@@ -16,7 +16,7 @@ void Line3D::setPoints(double x1, double y1, double z1, double x2, double y2, do
     points[1] = {x2, y2, z2};
 }
 
-// Plot the line in GNUPlot
+// Plot the line
 void Line3D::plotLine(const string &filename) {
     ofstream file(filename);
     if (!file) {
@@ -43,7 +43,7 @@ void Line3D::plotLine(const string &filename) {
     }
 }
 
-// Translate the line
+// translating the line
 void Line3D::translate(double dx, double dy, double dz) {
     for (auto &p : points) {
         p[0] += dx;
@@ -52,7 +52,7 @@ void Line3D::translate(double dx, double dy, double dz) {
     }
 }
 
-// Scale the line
+//scaling the line
 void Line3D::scale(double sx, double sy, double sz) {
     for (auto &p : points) {
         p[0] *= sx;
@@ -61,7 +61,7 @@ void Line3D::scale(double sx, double sy, double sz) {
     }
 }
 
-// Rotate the line around its midpoint
+// Rotate the line 
 void Line3D::rotate(double angle, char axis) {
     double radians = angle * M_PI / 180.0;
     double cx = (points[0][0] + points[1][0]) / 2.0;

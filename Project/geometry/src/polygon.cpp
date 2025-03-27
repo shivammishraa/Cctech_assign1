@@ -5,17 +5,17 @@
 
 using namespace std;
 
-// Constructor to initialize polygon with a given number of sides
+// Constructor to initialize  
 Polygon::Polygon(int sides) {
     vertices.reserve(sides);
 }
 
-// Add a vertex to the polygon
+// adding a vertex to the polygon
 void Polygon::addVertex(double x, double y, double z) {
     vertices.push_back({x, y, z});
 }
 
-// Calculate centroid of the polygon (for rotation)
+// Calculate the centroid of the polygon
 void Polygon::calculateCentroid(double &cx, double &cy, double &cz) {
     cx = cy = cz = 0;
     for (const auto &v : vertices) {
@@ -28,7 +28,7 @@ void Polygon::calculateCentroid(double &cx, double &cy, double &cz) {
     cz /= vertices.size();
 }
 
-// Plot the polygon using GNUPlot
+// plotting the polygon
 void Polygon::plotPolygon(const string &filename) {
     ofstream file(filename);
     if (!file) {
@@ -65,7 +65,7 @@ void Polygon::translate(double dx, double dy, double dz) {
     }
 }
 
-// Scale the polygon
+// for scaling the polygon
 void Polygon::scale(double sx, double sy, double sz) {
     for (auto &v : vertices) {
         v[0] *= sx;
@@ -74,7 +74,7 @@ void Polygon::scale(double sx, double sy, double sz) {
     }
 }
 
-// Rotate the polygon around its centroid
+// Rotate the polygon around a given axis
 void Polygon::rotate(double angle, char axis) {
     double radians = angle * M_PI / 180.0;
     double cx, cy, cz;

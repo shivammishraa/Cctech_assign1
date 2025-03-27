@@ -33,7 +33,7 @@ void Triangle::rotate(double angle, char axis, double Px, double Py, double Pz) 
     // Step 1: Translate to origin
     translate(-Px, -Py, -Pz);
 
-    // Step 2: Apply Rotation
+    // Step 2: Rotate around origin
     for (auto& v : vertices) {
         double x = v[0], y = v[1], z = v[2];
 
@@ -49,7 +49,7 @@ void Triangle::rotate(double angle, char axis, double Px, double Py, double Pz) 
         }
     }
 
-    // Step 3: Translate back
+    // Step 3: Translate back to original position
     translate(Px, Py, Pz);
 }
 
@@ -60,7 +60,7 @@ void Triangle::plotTriangle(const string& filename) {
         return;
     }
 
-    // Write triangle vertices (closing the loop)
+    // Write triangle vertices
     file<<"\n\n";
     for (const auto& v : vertices) {
         file << v[0] << " " << v[1] << " " << v[2] << endl;
@@ -69,7 +69,7 @@ void Triangle::plotTriangle(const string& filename) {
      file << vertices[0][0] << " " << vertices[0][1] << " " << vertices[0][2] << endl;
     file.close();
 
-    // Use GNUPLOT interactively with `qt` terminal
+    // Use GNUPLOT to plot the triangle
     string command = 
     "gnuplot -p -e \""
     "set terminal wxt; "
