@@ -16,6 +16,13 @@ Sphere::Sphere(double r, int seg) : radius(r), segments(seg) {
             double x = radius * sin(theta) * cos(phi);
             double y = radius * sin(theta) * sin(phi);
             double z = radius * cos(theta);
+
+            // Avoid invalid values
+            if (isnan(x) || isnan(y) || isnan(z)) {
+                cerr << "Error: Invalid vertex generated for sphere. Check radius and segments." << endl;
+                return;
+            }
+
             vertices.push_back({x, y, z});
         }
     }
