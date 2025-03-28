@@ -11,6 +11,7 @@ private:
     vector<vector<double>> vertices; // Stores cuboid vertices
 public:
     Cuboid(double length, double width, double height);
+    void plotCuboid(const string &filename);
     
     void translate(double dx, double dy, double dz);
     void scale(double sx, double sy, double sz);
@@ -19,7 +20,7 @@ public:
     void saveToFile(const string &filename);
     void loadFromFile(const string &filename);
 
-    void plotCuboid(const string &filename);
+    
 };
 
 #endif // CUBOID_H

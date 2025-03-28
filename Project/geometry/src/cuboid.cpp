@@ -47,7 +47,7 @@ void Cuboid::rotate(double angle, char axis) {
 }
 
 void Cuboid::saveToFile(const string &filename) {
-    ofstream file(filename, ios::app); // Open in append mode
+    ofstream file(filename, ios::trunc); // Open in append mode
     if (!file) {
         cerr << "Error: Cannot open file for writing.\n";
         return;
@@ -67,6 +67,7 @@ void Cuboid::saveToFile(const string &filename) {
         int v1 = edges[i][0], v2 = edges[i][1];
         file << vertices[v1][0] << " " << vertices[v1][1] << " " << vertices[v1][2] << "\n";
         file << vertices[v2][0] << " " << vertices[v2][1] << " " << vertices[v2][2] << "\n";
+        file << endl;
         file << "\n"; // Add a blank line to separate edges
     }
 
@@ -93,7 +94,7 @@ void Cuboid::plotCuboid(const string &filename) {
         return;
     }
 
-    gnuplot << "splot '" << filename << "' with linespoints pointtype 7 linecolor 'black' linewidth 2\n";
+    gnuplot << "splot '" << filename << "' with lines pointtype 7 linecolor 'red' linewidth 2\n";
     gnuplot << "pause -1\n";
     gnuplot.close();
 

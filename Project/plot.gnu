@@ -1,2 +1,2 @@
-splot 'data/transformed_cuboid.dat' with linespoints pointtype 7 linecolor 'black' linewidth 2
+splot 'data/original_cuboid.dat' with lines pointtype 7 linecolor 'red' linewidth 2
 pause -1
