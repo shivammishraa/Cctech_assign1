@@ -13,6 +13,7 @@ void Scene::addCuboid(double x, double y, double z, double length, double width,
     shapeTypes.push_back("cuboid");
 }
 
+
 void Scene::addCylinder(double x, double y, double z, double radius, double height, int segments) {
     shared_ptr<Cylinder> cylinder = make_shared<Cylinder>(radius, height, segments);
     cylinder->translate(x, y, z);
@@ -103,7 +104,7 @@ void Scene::plotScene(const string& filename) const {
         "set ylabel 'Y'; "
         "set zlabel 'Z'; "
         "set view equal xyz; "
-        "splot '" + filename + "' with linespoints pointtype 7 linecolor 'blue'\"";
+        "splot '" + filename + "' with linespoints pointtype 7 linecolor 'black'\"";
     int result = system(command.c_str());
     if (result != 0) {
         cerr << "Error: Failed to execute GNUPLOT command." << endl;
