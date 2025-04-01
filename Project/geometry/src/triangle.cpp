@@ -58,12 +58,10 @@ void Triangle::plotTriangle(const string& filename) {
     }
 
     // Write triangle vertices
-    file<<"\n\n";
     for (const auto& v : vertices) {
-        file << v[0] << " " << v[1] << " " << v[2] << endl;
+        file << v[0] << " " << v[1] << " " << v[2] << "\n";
     }
-    // file<<"\n\n";
-     file << vertices[0][0] << " " << vertices[0][1] << " " << vertices[0][2] << endl;
+    file << vertices[0][0] << " " << vertices[0][1] << " " << vertices[0][2] << "\n"; // Close the triangle
     file.close();
 
     // Use GNUPLOT to plot the triangle
@@ -71,9 +69,9 @@ void Triangle::plotTriangle(const string& filename) {
     "gnuplot -p -e \""
     "set terminal wxt; "
     "set xlabel 'X'; "
-    "set view equal xyz; "
     "set ylabel 'Y'; "
     "set zlabel 'Z'; "
+    "set view equal xyz; "
     "splot '" + filename + "' with linespoints pointtype 7 linecolor 'red'\"";
 
     int result = system(command.c_str());

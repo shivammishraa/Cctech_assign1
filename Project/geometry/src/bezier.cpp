@@ -99,8 +99,14 @@ void Bezier::plotBezier(const string& filename) {
     }
     file.close();
 
-    string command = "gnuplot --persist -e \"set xlabel 'X'; set ylabel 'Y'; set zlabel 'Z';  set terminal wxt; set view equal xyz; set hidden3d;"
-                          "set grid; set mouse; splot '" + filename + "' with lines linewidth 2\"";
+    string command = 
+        "gnuplot -p -e \""
+        "set terminal wxt; "
+        "set xlabel 'X'; "
+        "set ylabel 'Y'; "
+        "set zlabel 'Z'; "
+        "set view equal xyz; "
+        "splot '" + filename + "' with lines linewidth 2 linecolor 'blue'\"";
     system(command.c_str());
 }
 

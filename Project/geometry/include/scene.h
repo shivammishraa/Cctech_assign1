@@ -27,8 +27,7 @@ public:
     void addPolygon(int sides, const std::vector<std::vector<double>>& vertices);
     void addLine(double x1, double y1, double z1, double x2, double y2, double z2);
     void addBezier(const std::vector<std::vector<double>>& controlPoints);
-
-    void plotScene(const std::string& filename) const; // Ensure `const` is present
+    void plotScene(const std::string& filename) const; 
 };
 
 #endif // SCENE_H

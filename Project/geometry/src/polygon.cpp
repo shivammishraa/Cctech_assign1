@@ -48,7 +48,8 @@ void Polygon::plotPolygon(const string &filename) {
         "set xlabel 'X'; "
         "set ylabel 'Y'; "
         "set zlabel 'Z'; "
-        "plot '" + filename + "' with linespoints pointtype 7 linecolor 'blue'\"";
+        "set view equal xyz; "
+        "splot '" + filename + "' with linespoints pointtype 7 linecolor 'green'\"";
 
     int result = system(command.c_str());
     if (result != 0) {

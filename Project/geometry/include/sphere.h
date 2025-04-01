@@ -17,8 +17,6 @@ public:
     void plotSphere(const string& filename);
     void translate(double dx, double dy, double dz);
     void scale(double factor);
-
-    // Add saveToFile method
     void saveToFile(const string& filename) const;
 };
 

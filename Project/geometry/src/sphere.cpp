@@ -49,7 +49,7 @@ void Sphere::plotSphere(const string& filename) {
     gnuplotFile << "set zlabel 'Z'\n";
     gnuplotFile << "set view equal xyz\n";
     gnuplotFile << "r = " << radius << "\n";
-    gnuplotFile << "splot '" << filename << "' with points pointtype 7 linecolor 'blue'\n";
+    gnuplotFile << "splot '" << filename << "' with linespoints pointtype 7 linecolor 'blue'\n";
     gnuplotFile.close();
     system("gnuplot -p plot_sphere.gnu");
 }
@@ -63,11 +63,20 @@ void Sphere::saveToFile(const string& filename) const {
 
     cout << "Writing sphere vertices to file: " << filename << endl;
 
-    // Write sphere vertices
-    for (const auto& vertex : vertices) {
-        file << vertex[0] << " " << vertex[1] << " " << vertex[2] << "\n";
+    int numLatitudes = segments + 1;
+    int numLongitudes = segments + 1;
+
+    // Write vertices along latitude lines
+    for (int i = 0; i < numLatitudes; i++) {
+        for (int j = 0; j < numLongitudes; j++) {
+            int index = i * numLongitudes + j;
+            file << vertices[index][0] << " " << vertices[index][1] << " " << vertices[index][2] << "\n";
+        }
+        file << "\n"; // Separate latitude lines
     }
-    file << "\n"; // Add a blank line to separate shapes
+
+    // Add a blank line to separate the sphere's data from other shapes
+    file << "\n";
 
     file.close();
     cout << "Finished writing sphere vertices to file." << endl;

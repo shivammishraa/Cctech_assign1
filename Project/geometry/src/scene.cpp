@@ -86,6 +86,13 @@ void Scene::plotScene(const string& filename) const {
         } else if (shapeTypes[i] == "bezier") {
             static_pointer_cast<Bezier>(shapes[i])->saveToFile(filename);
         }
+
+        // Add a blank line to separate shapes
+        ofstream file(filename, ios::app);
+        if (file) {
+            file << "\n\n"; // Ensure proper separation between shapes
+            file.close();
+        }
     }
 
     // Debugging: Print the contents of the file

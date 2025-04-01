@@ -69,7 +69,7 @@ void Cylinder::plotCylinder(const string &filename) {
         return;
     }
 
-    gnuplot << "splot '" << filename << "' with linespoints pointtype 7 linecolor 'black' linewidth 2\n";
+    gnuplot << "splot '" << filename << "' with lines pointtype 7 linecolor 'black' linewidth 2\n";
     gnuplot << "pause -1\n";
     gnuplot.close();
 
