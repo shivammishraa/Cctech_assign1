@@ -8,5 +8,5 @@ set xlabel 'X'
 set ylabel 'Y'
 set zlabel 'Z'
 set view equal xyz
-r = 5
+r = 1.25
 splot 'data/original_sphere.dat' with linespoints pointtype 7 linecolor 'blue'

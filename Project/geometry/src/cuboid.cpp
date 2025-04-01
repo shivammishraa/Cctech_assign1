@@ -59,23 +59,23 @@ void Cuboid::saveToFile(const string &filename) const {
         {0, 4}, {1, 5}, {2, 6}, {3, 7}  // Vertical edges
     };
 
-    // for (int i = 0; i < 12; i++) {
-    //     int v1 = edges[i][0], v2 = edges[i][1];
-    //     file << vertices[v1][0] << " " << vertices[v1][1] << " " << vertices[v1][2] << "\n\n";
-    //     file << vertices[v2][0] << " " << vertices[v2][1] << " " << vertices[v2][2] << "\n\n";
-    // }
+    for (int i = 0; i < 12; i++) {
+        int v1 = edges[i][0], v2 = edges[i][1];
+        file << vertices[v1][0] << " " << vertices[v1][1] << " " << vertices[v1][2] << "\n\n";
+        file << vertices[v2][0] << " " << vertices[v2][1] << " " << vertices[v2][2] << "\n\n";
+    }
          
-    file<<vertices[0][0]<<" "<<vertices[0][1]<<" "<<vertices[0][2]<<"\n";
-    file<<vertices[1][0]<<" "<<vertices[1][1]<<" "<<vertices[1][2]<<"\n";
-    file<<vertices[2][0]<<" "<<vertices[2][1]<<" "<<vertices[2][2]<<"\n";
-    file<<vertices[3][0]<<" "<<vertices[3][1]<<" "<<vertices[3][2]<<"\n";
-    file<<vertices[0][0]<<" "<<vertices[0][1]<<" "<<vertices[0][2]<<"\n";
-    file<<"\n";
-    file<<vertices[4][0]<<" "<<vertices[4][1]<<" "<<vertices[4][2]<<"\n";
-    file<<vertices[5][0]<<" "<<vertices[5][1]<<" "<<vertices[5][2]<<"\n";
-    file<<vertices[6][0]<<" "<<vertices[6][1]<<" "<<vertices[6][2]<<"\n";
-    file<<vertices[7][0]<<" "<<vertices[7][1]<<" "<<vertices[7][2]<<"\n";
-    file<<vertices[4][0]<<" "<<vertices[4][1]<<" "<<vertices[4][2]<<"\n";
+    // file<<vertices[0][0]<<" "<<vertices[0][1]<<" "<<vertices[0][2]<<"\n";
+    // file<<vertices[1][0]<<" "<<vertices[1][1]<<" "<<vertices[1][2]<<"\n";
+    // file<<vertices[2][0]<<" "<<vertices[2][1]<<" "<<vertices[2][2]<<"\n";
+    // file<<vertices[3][0]<<" "<<vertices[3][1]<<" "<<vertices[3][2]<<"\n";
+    // file<<vertices[0][0]<<" "<<vertices[0][1]<<" "<<vertices[0][2]<<"\n";
+    // file<<"\n";
+    // file<<vertices[4][0]<<" "<<vertices[4][1]<<" "<<vertices[4][2]<<"\n";
+    // file<<vertices[5][0]<<" "<<vertices[5][1]<<" "<<vertices[5][2]<<"\n";
+    // file<<vertices[6][0]<<" "<<vertices[6][1]<<" "<<vertices[6][2]<<"\n";
+    // file<<vertices[7][0]<<" "<<vertices[7][1]<<" "<<vertices[7][2]<<"\n";
+    // file<<vertices[4][0]<<" "<<vertices[4][1]<<" "<<vertices[4][2]<<"\n";
 
     
     file.close();

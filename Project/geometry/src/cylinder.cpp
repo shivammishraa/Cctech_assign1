@@ -37,22 +37,22 @@ void Cylinder::saveToFile(const string &filename) const {
     // Write bottom circle edges
     for (int i = 0; i < resolution; i++) {
         int next = (i + 1) % resolution;
-        file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n";
-        file << vertices[next][0] << " " << vertices[next][1] << " " << vertices[next][2] << "\n";
+        file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n\n";
+        file << vertices[next][0] << " " << vertices[next][1] << " " << vertices[next][2] << "\n\n";
     }
    file<<"\n";
     // Write top circle edges
     for (int i = resolution; i < 2 * resolution; i++) {
         int next = (i + 1) % resolution + resolution;
-        file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n";
-        file << vertices[next][0] << " " << vertices[next][1] << " " << vertices[next][2] << "\n";
+        file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n\n";
+        file << vertices[next][0] << " " << vertices[next][1] << " " << vertices[next][2] << "\n\n";
     }
 
-    // Write vertical edges
-    // for (int i = 0; i < resolution; i++) {
-    //     file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n\n";
-    //     file << vertices[i + resolution][0] << " " << vertices[i + resolution][1] << " " << vertices[i + resolution][2] << "\n\n";
-    // }
+   // Write vertical edges
+    for (int i = 0; i < resolution; i++) {
+        file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n\n";
+        file << vertices[i + resolution][0] << " " << vertices[i + resolution][1] << " " << vertices[i + resolution][2] << "\n\n";
+    }
 
     file.close();
 }
