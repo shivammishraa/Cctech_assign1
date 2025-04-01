@@ -17,7 +17,7 @@ void Line3D::setPoints(double x1, double y1, double z1, double x2, double y2, do
 }
 
 // Plot the line
-void Line3D::plotLine(const string &filename) {
+void Line3D::plotLine(const string &filename) const { // Marked as const
     ofstream file(filename);
     if (!file) {
         cerr << "Error opening file: " << filename << "\n";
@@ -83,16 +83,21 @@ void Line3D::rotate(double angle, char axis) {
     }
 }
 
+void Line3D::plot(const std::string& filename) const {
+    plotLine(filename); // Use the existing plotLine method
+}
+
 void Line3D::saveToFile(const std::string& filename) const {
-    std::ofstream file(filename, std::ios::app); // Open in append mode
+    ofstream file(filename, ios::app); // Open in append mode
     if (!file) {
-        std::cerr << "Error: Cannot open file " << filename << " for writing.\n";
+        cerr << "Error: Cannot open file for writing.\n";
         return;
     }
 
-    for (const auto& point : points) {
-        file << point[0] << " " << point[1] << " " << point[2] << "\n";
+    for (size_t i = 0; i < points.size() - 1; i++) {
+        file << points[i][0] << " " << points[i][1] << " " << points[i][2] << "\n";
+        file << points[i + 1][0] << " " << points[i + 1][1] << " " << points[i + 1][2] << "\n\n";
     }
-    file << "\n"; // Add a blank line to separate shapes
+
     file.close();
 }

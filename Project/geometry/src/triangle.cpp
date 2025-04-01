@@ -1,4 +1,7 @@
 #include "triangle.h"
+#include <iostream>
+#include <fstream>
+#include <cmath>
 
 using namespace std;
 
@@ -50,7 +53,7 @@ void Triangle::rotate(double angle, char axis, double Px, double Py, double Pz) 
     translate(Px, Py, Pz);
 }
 
-void Triangle::plotTriangle(const string& filename) {
+void Triangle::plotTriangle(const string& filename) const { // Marked as const
     ofstream file(filename);
     if (!file) {
         cerr << "Error opening file: " << filename << endl;
@@ -87,18 +90,15 @@ void Triangle::saveToFile(const string &filename) const {
         return;
     }
 
-    cout << "Writing triangle vertices to file: " << filename << endl; // Debugging statement
-
-    // Write triangle edges
-    file << vertices[0][0] << " " << vertices[0][1] << " " << vertices[0][2] << "\n";
-    file << vertices[1][0] << " " << vertices[1][1] << " " << vertices[1][2] << "\n\n";
-
-    file << vertices[1][0] << " " << vertices[1][1] << " " << vertices[1][2] << "\n";
-    file << vertices[2][0] << " " << vertices[2][1] << " " << vertices[2][2] << "\n\n";
-
-    file << vertices[2][0] << " " << vertices[2][1] << " " << vertices[2][2] << "\n";
-    file << vertices[0][0] << " " << vertices[0][1] << " " << vertices[0][2] << "\n\n";
+    for (size_t i = 0; i < vertices.size(); i++) {
+        size_t next = (i + 1) % vertices.size();
+        file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n";
+        file << vertices[next][0] << " " << vertices[next][1] << " " << vertices[next][2] << "\n\n";
+    }
 
     file.close();
-    cout << "Finished writing triangle vertices to file." << endl; // Debugging statement
+}
+
+void Triangle::plot(const std::string& filename) const {
+    plotTriangle(filename); // Use the existing plotTriangle methodhod
 }

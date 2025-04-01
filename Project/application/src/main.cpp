@@ -1,13 +1,13 @@
 #include <iostream>
-#include <fstream>
-#include <string>
+#include <map>
+#include <functional>
+#include <memory>
 #include "cuboid.h"
-#include "triangle.h"
-#include "bezier.h"
-#include "polygon.h"
-#include "cylinder.h"
 #include "sphere.h"
-#include "polyline.h"
+#include "triangle.h"
+#include "cylinder.h"
+#include "polygon.h"
+#include "bezier.h"
 #include "line3D.h"
 #include "scene.h"
 
@@ -15,430 +15,438 @@ using namespace std;
 
 void menu() {
     cout << "What do you want to plot:\n";
-    cout << "1. Cuboid\n";//issue in the diagonls and also see the choices once again
-    cout << "2. Triangle\n";//issue in the plot graph need to make it more clear
-    cout << "3. Bezier Curve\n";//once again see the logic
-    cout << "4. Polygon\n";//issue in 3D check the logic
-    cout << "5. Cylinder\n";//working fine but see the choices once again
-    cout << "6. Sphere\n";//choices
-    cout << "7. Polyline\n";//fine
-    cout << "8. 3D Line\n";//fine
-
-    
-    cout << "9. Scene (Combination of Shapes)\n";
+    cout << "1. Cuboid\n";
+    cout << "2. Sphere\n";
+    cout << "3. Triangle\n";
+    cout << "4. Cylinder\n";
+    cout << "5. Polygon\n";
+    cout << "6. Bezier Curve\n";
+    cout << "7. 3D Line\n";
+    cout << "8. Scene (Combination of Shapes)\n";
     cout << "Enter choice: ";
 }
 
-int main() {
-    int choice;
-    menu();
-    cin >> choice;
+void handleCuboid() {
+    double length, width, height;
+    cout << "Enter length, width, height: ";
+    cin >> length >> width >> height;
 
-    if (choice == 9) {
-        Scene scene;
-        int subChoice;
-        do {
-            cout << "Add shapes to the scene:\n";
-            menu();
-            cin >> subChoice;
+    auto cuboid = make_shared<Cuboid>(length, width, height);
+    cuboid->plot("data/original_cuboid.dat");
 
-            if (subChoice == 1) {
-                double x, y, z, length, width, height;
-                cout << "Enter origin (x y z) and dimensions (length width height): ";
-                cin >> x >> y >> z >> length >> width >> height;
-                scene.addCuboid(x, y, z, length, width, height);
-            } else if (subChoice == 2) {
-                double x1, y1, z1, x2, y2, z2, x3, y3, z3;
-                cout << "Enter vertices (x1 y1 z1), (x2 y2 z2), (x3 y3 z3): ";
-                cin >> x1 >> y1 >> z1 >> x2 >> y2 >> z2 >> x3 >> y3 >> z3;
-                scene.addTriangle(x1, y1, z1, x2, y2, z2, x3, y3, z3);
-            } else if (subChoice == 3) {
-                int numPoints;
-                cout << "Enter number of control points: ";
-                cin >> numPoints;
-                vector<vector<double>> controlPoints(numPoints, vector<double>(3));
-                for (int i = 0; i < numPoints; ++i) {
-                    cout << "Enter control point " << i + 1 << " (x y z): ";
-                    cin >> controlPoints[i][0] >> controlPoints[i][1] >> controlPoints[i][2];
-                }
-                scene.addBezier(controlPoints);
-            } else if (subChoice == 4) {
-                int sides;
-                cout << "Enter number of sides: ";
-                cin >> sides;
-                vector<vector<double>> vertices(sides, vector<double>(3));
-                for (int i = 0; i < sides; ++i) {
-                    cout << "Enter vertex " << i + 1 << " (x y z): ";
-                    cin >> vertices[i][0] >> vertices[i][1] >> vertices[i][2];
-                }
-                scene.addPolygon(sides, vertices);
-            } else if (subChoice == 5) {
-                double x, y, z, radius, height;
-                int segments;
-                cout << "Enter origin (x y z), radius, height, and segments: ";
-                cin >> x >> y >> z >> radius >> height >> segments;
-                scene.addCylinder(x, y, z, radius, height, segments);
-            } else if (subChoice == 6) {
-                double x, y, z, radius;
-                int segments;
-                cout << "Enter center (x y z), radius, and segments: ";
-                cin >> x >> y >> z >> radius >> segments;
-                scene.addSphere(x, y, z, radius, segments);
-            } else if (subChoice == 7) {
-                int numPoints;
-                cout << "Enter number of points: ";
-                cin >> numPoints;
-                vector<vector<double>> points(numPoints, vector<double>(3));
-                for (int i = 0; i < numPoints; ++i) {
-                    cout << "Enter point " << i + 1 << " (x y z): ";
-                    cin >> points[i][0] >> points[i][1] >> points[i][2];
-                }
-                for (size_t i = 1; i < points.size(); ++i) {
-                    scene.addLine(points[i - 1][0], points[i - 1][1], points[i - 1][2],
-                                  points[i][0], points[i][1], points[i][2]);
-                }
-            } else if (subChoice == 8) {
-                double x1, y1, z1, x2, y2, z2;
-                cout << "Enter endpoints (x1 y1 z1) and (x2 y2 z2): ";
-                cin >> x1 >> y1 >> z1 >> x2 >> y2 >> z2;
-                scene.addLine(x1, y1, z1, x2, y2, z2);
-            }
+    int transformChoice;
+    do {
+        cout << "Choose a transformation:\n";
+        cout << "1. Translate\n";
+        cout << "2. Rotate\n";
+        cout << "3. Scale\n";
+        cout << "0. Finish\n";
+        cout << "Enter your choice: ";
+        cin >> transformChoice;
 
-            cout << "Do you want to add more shapes? (1 for Yes, 0 for No): ";
-            cin >> subChoice;
-        } while (subChoice == 1);
+        if (transformChoice == 1) {
+            double dx, dy, dz;
+            cout << "Enter translation distances (dx, dy, dz): ";
+            cin >> dx >> dy >> dz;
+            cuboid->translate(dx, dy, dz);
+            cuboid->plot("data/transformed_cuboid.dat");
+        } else if (transformChoice == 2) {
+            double angle;
+            char axis;
+            cout << "Enter rotation angle and axis (x, y, or z): ";
+            cin >> angle >> axis;
+            cuboid->rotate(angle, axis);
+            cuboid->plot("data/transformed_cuboid.dat");
+        } else if (transformChoice == 3) {
+            double sx, sy, sz;
+            cout << "Enter scaling factors (sx, sy, sz): ";
+            cin >> sx >> sy >> sz;
+            cuboid->scale(sx, sy, sz);
+            cuboid->plot("data/transformed_cuboid.dat");
+        }
+    } while (transformChoice != 0);
+}
 
-        scene.plotScene("data/scene.dat");
-    } else {
-        if (choice == 1) {
-            // Cuboid 
-            double length, width, height;
+void handleSphere() {
+    double radius;
+    int segments;
+    cout << "Enter radius and number of segments: ";
+    cin >> radius >> segments;
+
+    auto sphere = make_shared<Sphere>(radius, segments);
+    sphere->plot("data/original_sphere.dat");
+
+    int transformChoice;
+    do {
+        cout << "Choose a transformation:\n";
+        cout << "1. Translate\n";
+        cout << "2. Scale\n";
+        cout << "0. Finish\n";
+        cout << "Enter your choice: ";
+        cin >> transformChoice;
+
+        if (transformChoice == 1) {
+            double dx, dy, dz;
+            cout << "Enter translation distances (dx, dy, dz): ";
+            cin >> dx >> dy >> dz;
+            sphere->translate(dx, dy, dz);
+            sphere->plot("data/transformed_sphere.dat");
+        } else if (transformChoice == 2) {
+            double factor;
+            cout << "Enter scaling factor: ";
+            cin >> factor;
+            sphere->scale(factor);
+            sphere->plot("data/transformed_sphere.dat");
+        }
+    } while (transformChoice != 0);
+}
+
+void handleTriangle() {
+    double x1, y1, z1, x2, y2, z2, x3, y3, z3;
+    cout << "Enter vertices (x1 y1 z1), (x2 y2 z2), (x3 y3 z3): ";
+    cin >> x1 >> y1 >> z1 >> x2 >> y2 >> z2 >> x3 >> y3 >> z3;
+
+    auto triangle = make_shared<Triangle>(x1, y1, z1, x2, y2, z2, x3, y3, z3);
+    triangle->plot("data/original_triangle.dat");
+
+    int transformChoice;
+    do {
+        cout << "Choose a transformation:\n";
+        cout << "1. Translate\n";
+        cout << "2. Rotate\n";
+        cout << "3. Scale\n";
+        cout << "0. Finish\n";
+        cout << "Enter your choice: ";
+        cin >> transformChoice;
+
+        if (transformChoice == 1) {
+            double dx, dy, dz;
+            cout << "Enter translation distances (dx, dy, dz): ";
+            cin >> dx >> dy >> dz;
+            triangle->translate(dx, dy, dz);
+            triangle->plot("data/transformed_triangle.dat");
+        } else if (transformChoice == 2) {
+            double angle;
+            char axis;
+            cout << "Enter rotation angle and axis (x, y, or z): ";
+            cin >> angle >> axis;
+            triangle->rotate(angle, axis, 0, 0, 0); // Assuming rotation around origin
+            triangle->plot("data/transformed_triangle.dat");
+        } else if (transformChoice == 3) {
+            double sx, sy, sz;
+            cout << "Enter scaling factors (sx, sy, sz): ";
+            cin >> sx >> sy >> sz;
+            triangle->scale(sx, sy, sz);
+            triangle->plot("data/transformed_triangle.dat");
+        }
+    } while (transformChoice != 0);
+}
+
+void handleCylinder() {
+    double radius, height;
+    int resolution;
+    cout << "Enter radius, height, and resolution: ";
+    cin >> radius >> height >> resolution;
+
+    auto cylinder = make_shared<Cylinder>(radius, height, resolution);
+    cylinder->plot("data/original_cylinder.dat");
+
+    int transformChoice;
+    do {
+        cout << "Choose a transformation:\n";
+        cout << "1. Translate\n";
+        cout << "2. Rotate\n";
+        cout << "3. Scale\n";
+        cout << "0. Finish\n";
+        cout << "Enter your choice: ";
+        cin >> transformChoice;
+
+        if (transformChoice == 1) {
+            double dx, dy, dz;
+            cout << "Enter translation distances (dx, dy, dz): ";
+            cin >> dx >> dy >> dz;
+            cylinder->translate(dx, dy, dz);
+            cylinder->plot("data/transformed_cylinder.dat");
+        } else if (transformChoice == 2) {
+            double angle;
+            char axis;
+            cout << "Enter rotation angle and axis (x, y, or z): ";
+            cin >> angle >> axis;
+            cylinder->rotate(angle, axis);
+            cylinder->plot("data/transformed_cylinder.dat");
+        } else if (transformChoice == 3) {
+            double sx, sy, sz;
+            cout << "Enter scaling factors (sx, sy, sz): ";
+            cin >> sx >> sy >> sz;
+            cylinder->scale(sx, sy, sz);
+            cylinder->plot("data/transformed_cylinder.dat");
+        }
+    } while (transformChoice != 0);
+}
+
+void handlePolygon() {
+    int sides;
+    cout << "Enter number of sides: ";
+    cin >> sides;
+
+    auto polygon = make_shared<Polygon>(sides);
+    for (int i = 0; i < sides; i++) {
+        double x, y, z;
+        cout << "Enter vertex " << i + 1 << " (x y z): ";
+        cin >> x >> y >> z;
+        polygon->addVertex(x, y, z);
+    }
+    polygon->plot("data/original_polygon.dat");
+
+    int transformChoice;
+    do {
+        cout << "Choose a transformation:\n";
+        cout << "1. Translate\n";
+        cout << "2. Rotate\n";
+        cout << "3. Scale\n";
+        cout << "0. Finish\n";
+        cout << "Enter your choice: ";
+        cin >> transformChoice;
+
+        if (transformChoice == 1) {
+            double dx, dy, dz;
+            cout << "Enter translation distances (dx, dy, dz): ";
+            cin >> dx >> dy >> dz;
+            polygon->translate(dx, dy, dz);
+            polygon->plot("data/transformed_polygon.dat");
+        } else if (transformChoice == 2) {
+            double angle;
+            char axis;
+            cout << "Enter rotation angle and axis (x, y, or z): ";
+            cin >> angle >> axis;
+            polygon->rotate(angle, axis);
+            polygon->plot("data/transformed_polygon.dat");
+        } else if (transformChoice == 3) {
+            double sx, sy, sz;
+            cout << "Enter scaling factors (sx, sy, sz): ";
+            cin >> sx >> sy >> sz;
+            polygon->scale(sx, sy, sz);
+            polygon->plot("data/transformed_polygon.dat");
+        }
+    } while (transformChoice != 0);
+}
+
+void handleBezier() {
+    int numPoints;
+    cout << "Enter number of control points: ";
+    cin >> numPoints;
+
+    auto bezier = make_shared<Bezier>();
+    for (int i = 0; i < numPoints; i++) {
+        double x, y, z;
+        cout << "Enter control point " << i + 1 << " (x y z): ";
+        cin >> x >> y >> z;
+        bezier->addControlPoint(x, y, z);
+    }
+    bezier->plot("data/original_bezier.dat");
+
+    int transformChoice;
+    do {
+        cout << "Choose a transformation:\n";
+        cout << "1. Translate\n";
+        cout << "2. Rotate\n";
+        cout << "3. Scale\n";
+        cout << "0. Finish\n";
+        cout << "Enter your choice: ";
+        cin >> transformChoice;
+
+        if (transformChoice == 1) {
+            double dx, dy, dz;
+            cout << "Enter translation distances (dx, dy, dz): ";
+            cin >> dx >> dy >> dz;
+            bezier->translate(dx, dy, dz);
+            bezier->plot("data/transformed_bezier.dat");
+        } else if (transformChoice == 2) {
+            double angle;
+            char axis;
+            cout << "Enter rotation angle and axis (x, y, or z): ";
+            cin >> angle >> axis;
+            bezier->rotate(angle, axis);
+            bezier->plot("data/transformed_bezier.dat");
+        } else if (transformChoice == 3) {
+            double sx, sy, sz;
+            cout << "Enter scaling factors (sx, sy, sz): ";
+            cin >> sx >> sy >> sz;
+            bezier->scale(sx, sy, sz);
+            bezier->plot("data/transformed_bezier.dat");
+        }
+    } while (transformChoice != 0);
+}
+
+void handleLine3D() {
+    double x1, y1, z1, x2, y2, z2;
+    cout << "Enter endpoints (x1 y1 z1) and (x2 y2 z2): ";
+    cin >> x1 >> y1 >> z1 >> x2 >> y2 >> z2;
+
+    auto line = make_shared<Line3D>();
+    line->setPoints(x1, y1, z1, x2, y2, z2);
+    line->plot("data/original_line3D.dat");
+
+    int transformChoice;
+    do {
+        cout << "Choose a transformation:\n";
+        cout << "1. Translate\n";
+        cout << "2. Rotate\n";
+        cout << "3. Scale\n";
+        cout << "0. Finish\n";
+        cout << "Enter your choice: ";
+        cin >> transformChoice;
+
+        if (transformChoice == 1) {
+            double dx, dy, dz;
+            cout << "Enter translation distances (dx, dy, dz): ";
+            cin >> dx >> dy >> dz;
+            line->translate(dx, dy, dz);
+            line->plot("data/transformed_line3D.dat");
+        } else if (transformChoice == 2) {
+            double angle;
+            char axis;
+            cout << "Enter rotation angle and axis (x, y, or z): ";
+            cin >> angle >> axis;
+            line->rotate(angle, axis);
+            line->plot("data/transformed_line3D.dat");
+        } else if (transformChoice == 3) {
+            double sx, sy, sz;
+            cout << "Enter scaling factors (sx, sy, sz): ";
+            cin >> sx >> sy >> sz;
+            line->scale(sx, sy, sz);
+            line->plot("data/transformed_line3D.dat");
+        }
+    } while (transformChoice != 0);
+}
+
+void handleScene() {
+    Scene scene;
+    int subChoice;
+    do {
+        cout << "Choose a shape to add to the scene:\n";
+        cout << "1. Add Cuboid\n";
+        cout << "2. Add Sphere\n";
+        cout << "3. Add Triangle\n";
+        cout << "4. Add Cylinder\n";
+        cout << "5. Add Polygon\n";
+        cout << "6. Add Bezier Curve\n";
+        cout << "7. Add 3D Line\n";
+        cout << "0. Finish\n";
+        cout << "Enter your choice: ";
+        cin >> subChoice;
+
+        if (subChoice == 1) {
+            double x, y, z, length, width, height;
+            cout << "Enter coordinates (x, y, z) where you want to plot the cuboid: ";
+            cin >> x >> y >> z;
             cout << "Enter length, width, height: ";
             cin >> length >> width >> height;
-
-            Cuboid cuboid(length, width, height);
-            cuboid.plotCuboid("data/original_cuboid.dat");
-
-            char transform;
-            cout << "Do you want to apply transformation? (y/n): ";
-            cin >> transform;
-            if (transform == 'y') {
-                double dx, dy, dz;
-                cout << "Enter translation values (dx dy dz): ";
-                cin >> dx >> dy >> dz;
-                cuboid.translate(dx, dy, dz);
-
-                double sx, sy, sz;
-                cout << "Enter scaling factors (sx sy sz): ";
-                cin >> sx >> sy >> sz;
-                cuboid.scale(sx, sy, sz);
-
-                double angle;
-                char axis;
-                cout << "Enter rotation angle and axis (x/y/z): ";
-                cin >> angle >> axis;
-                cuboid.rotate(angle, axis);
-            }
-            cuboid.plotCuboid("data/transformed_cuboid.dat");
-
-        } else if (choice == 2) {
-            //triangle 
-            double x1, y1, z1, x2, y2, z2, x3, y3, z3;
-            cout << "Enter first vertex (x y z): ";
-            cin >> x1 >> y1 >> z1;
-            cout << "Enter second vertex (x y z): ";
-            cin >> x2 >> y2 >> z2;
-            cout << "Enter third vertex (x y z): ";
-            cin >> x3 >> y3 >> z3;
-
-            Triangle triangle(x1, y1, z1, x2, y2, z2, x3, y3, z3);
-            string filename = "data/triangle.dat";
-            triangle.plotTriangle(filename);
-
-            char transform;
-            cout << "Do you want to apply transformations? (y/n): ";
-            cin >> transform;
-
-            if (transform == 'y') {
-                int option;
-                cout << "1. Translate\n2. Scale\n3. Rotate\n";
-                cin >> option;
-
-                if (option == 1) {
-                    double dx, dy, dz;
-                    cout << "Enter translation values (dx dy dz): ";
-                    cin >> dx >> dy >> dz;
-                    triangle.translate(dx, dy, dz);
-                } else if (option == 2) {
-                    double sx, sy, sz;
-                    cout << "Enter scaling factors (sx sy sz): ";
-                    cin >> sx >> sy >> sz;
-                    triangle.scale(sx, sy, sz);
-                } else if (option == 3) {
-                    double angle, Px, Py, Pz;
-                    char axis;
-                    cout << "Enter rotation angle: ";
-                    cin >> angle;
-                    cout << "Enter rotation axis (x/y/z): ";
-                    cin >> axis;
-                    cout << "Enter rotation point (Px Py Pz): ";
-                    cin >> Px >> Py >> Pz;
-                    triangle.rotate(angle, axis, Px, Py, Pz);
-                }
-            }
-
-            triangle.plotTriangle("data/triangle_transformed.dat");
-            
-
-        } else if (choice == 3) {
-            // Bezier curve
-            Bezier bezier;
-            int numPoints;
-            cout << "Enter the number of control points: ";
-            cin >> numPoints;
-        
-            for (int i = 0; i < numPoints; i++) {
-                double x, y, z;
-                cout << "Enter coordinates for point " << i + 1 << " (x y z): ";
-                cin >> x >> y >> z;
-                bezier.addControlPoint(x, y, z);
-            }
-        
-            string filename = "data/bezier.dat";
-            bezier.plotBezier(filename);
-        
-            char transform;
-            cout << "Do you want to apply transformations? (y/n): ";
-            cin >> transform;
-        
-            if (transform == 'y') {
-                int option;
-                cout << "1. Translate\n2. Scale\n3. Rotate\n";
-                cin >> option;
-        
-                if (option == 1) {
-                    double dx, dy, dz;
-                    cout << "Enter translation values (dx dy dz): ";
-                    cin >> dx >> dy >> dz;
-                    bezier.translate(dx, dy, dz);
-                } else if (option == 2) {
-                    double sx, sy, sz;
-                    cout << "Enter scaling factors (sx sy sz): ";
-                    cin >> sx >> sy >> sz;
-                    bezier.scale(sx, sy, sz);
-                } else if (option == 3) {
-                    double angle;
-                    char axis;
-                    cout << "Enter rotation angle and axis (x/y/z): ";
-                    cin >> angle >> axis;
-                    bezier.rotate(angle, axis);
-                }
-            }
-        
-            bezier.plotBezier("data/bezier_transformed.dat");
-            
-        } else if (choice == 4) {
-            // Polygon
-            int sides;
-            cout << "Enter number of sides: ";
-            cin >> sides;
-    
-            Polygon polygon(sides);
-    
-            for (int i = 0; i < sides; i++) {
-                double x, y, z;
-                cout << "Enter coordinates for vertex " << i + 1 << " (x y z): ";
-                cin >> x >> y >> z;
-                polygon.addVertex(x, y, z);
-            }
-    
-            string filename = "data/polygon.dat";
-            polygon.plotPolygon(filename);
-    
-            char transform;
-            cout << "Do you want to apply transformations? (y/n): ";
-            cin >> transform;
-    
-            if (transform == 'y') {
-                int option;
-                cout << "1. Translate\n2. Scale\n3. Rotate\n";
-                cin >> option;
-    
-                if (option == 1) {
-                    double dx, dy, dz;
-                    cout << "Enter translation values (dx dy dz): ";
-                    cin >> dx >> dy >> dz;
-                    polygon.translate(dx, dy, dz);
-                } else if (option == 2) {
-                    double sx, sy, sz;
-                    cout << "Enter scaling factors (sx sy sz): ";
-                    cin >> sx >> sy >> sz;
-                    polygon.scale(sx, sy, sz);
-                } else if (option == 3) {
-                    double angle;
-                    char axis;
-                    cout << "Enter rotation angle and axis (x/y/z): ";
-                    cin >> angle >> axis;
-                    polygon.rotate(angle, axis);
-                }
-            }
-    
-            polygon.plotPolygon("data/polygon_transformed.dat");
-    
-            
-
-        } else if (choice == 5) {
-            // Cylinder 
-            double radius, height;
+            auto cuboid = make_shared<Cuboid>(length, width, height);
+            cuboid->translate(x, y, z);
+            scene.addShape(cuboid);
+        } else if (subChoice == 2) {
+            double x, y, z, radius;
             int segments;
-            cout << "Enter radius, height, and number of segments: ";
-            cin >> radius >> height >> segments;
-
-            Cylinder cylinder(radius, height, segments);
-            cylinder.plotCylinder("data/original_cylinder.dat");
-
-            char transform;
-            cout << "Do you want to apply transformation? (y/n): ";
-            cin >> transform;
-            if (transform == 'y') {
-                double dx, dy, dz;
-                cout << "Enter translation values (dx dy dz): ";
-                cin >> dx >> dy >> dz;
-                cylinder.translate(dx, dy, dz);
-
-                double sx, sy, sz;
-                cout << "Enter scaling factors (sx sy sz): ";
-                cin >> sx >> sy >> sz;
-                cylinder.scale(sx, sy, sz);
-
-                double angle;
-                char axis;
-                cout << "Enter rotation angle and axis (x/y/z): ";
-                cin >> angle >> axis;
-                cylinder.rotate(angle, axis);
-            }
-            cylinder.plotCylinder("data/transformed_cylinder.dat");
-        
-        } else if (choice == 6) {
-            // Sphere
-            double radius;
-            int segments;
+            cout << "Enter coordinates (x, y, z) where you want to plot the sphere: ";
+            cin >> x >> y >> z;
             cout << "Enter radius and number of segments: ";
             cin >> radius >> segments;
-
-            Sphere sphere(radius, segments);
-            sphere.plotSphere("data/original_sphere.dat");
-
-            char transform;
-            cout << "Do you want to apply transformation? (y/n): ";
-            cin >> transform;
-            if (transform == 'y') {
-                double dx, dy, dz;
-                cout << "Enter translation values (dx dy dz): ";
-                cin >> dx >> dy >> dz;
-                sphere.translate(dx, dy, dz);
-
-                double s;
-                cout << "Enter scaling factor: ";
-                cin >> s;
-                sphere.scale(s);
+            auto sphere = make_shared<Sphere>(radius, segments);
+            sphere->translate(x, y, z);
+            scene.addShape(sphere);
+        } else if (subChoice == 3) {
+            double x, y, z, x1, y1, z1, x2, y2, z2, x3, y3, z3;
+            cout << "Enter coordinates (x, y, z) where you want to plot the triangle: ";
+            cin >> x >> y >> z;
+            cout << "Enter vertices (x1 y1 z1), (x2 y2 z2), (x3 y3 z3): ";
+            cin >> x1 >> y1 >> z1 >> x2 >> y2 >> z2 >> x3 >> y3 >> z3;
+            auto triangle = make_shared<Triangle>(x1, y1, z1, x2, y2, z2, x3, y3, z3);
+            triangle->translate(x, y, z);
+            scene.addShape(triangle);
+        } else if (subChoice == 4) {
+            double x, y, z, radius, height;
+            int resolution;
+            cout << "Enter coordinates (x, y, z) where you want to plot the cylinder: ";
+            cin >> x >> y >> z;
+            cout << "Enter radius, height, and resolution: ";
+            cin >> radius >> height >> resolution;
+            auto cylinder = make_shared<Cylinder>(radius, height, resolution);
+            cylinder->translate(x, y, z);
+            scene.addShape(cylinder);
+        } else if (subChoice == 5) {
+            double x, y, z;
+            int sides;
+            cout << "Enter coordinates (x, y, z) where you want to plot the polygon: ";
+            cin >> x >> y >> z;
+            cout << "Enter number of sides: ";
+            cin >> sides;
+            auto polygon = make_shared<Polygon>(sides);
+            for (int i = 0; i < sides; i++) {
+                double vx, vy, vz;
+                cout << "Enter vertex " << i + 1 << " (x y z): ";
+                cin >> vx >> vy >> vz;
+                polygon->addVertex(vx, vy, vz);
             }
-            sphere.plotSphere("data/transformed_sphere.dat");
-
-        } else if (choice == 7) {
-            // polyline
-            Polyline polyline;
+            polygon->translate(x, y, z);
+            scene.addShape(polygon);
+        } else if (subChoice == 6) {
+            double x, y, z;
             int numPoints;
-            cout << "Enter the number of points in the polyline: ";
+            cout << "Enter coordinates (x, y, z) where you want to plot the Bezier curve: ";
+            cin >> x >> y >> z;
+            cout << "Enter number of control points: ";
             cin >> numPoints;
-
+            auto bezier = make_shared<Bezier>();
             for (int i = 0; i < numPoints; i++) {
-                double x, y, z;
-                cout << "Enter coordinates for point " << i + 1 << " (x y z): ";
-                cin >> x >> y >> z;
-                polyline.addPoint(x, y, z);
+                double vx, vy, vz;
+                cout << "Enter control point " << i + 1 << " (x y z): ";
+                cin >> vx >> vy >> vz;
+                bezier->addControlPoint(vx, vy, vz);
             }
-
-            string filename = "data/polyline.dat";
-            polyline.plotPolyline(filename);
-
-            char transform;
-            cout << "Do you want to apply transformations? (y/n): ";
-            cin >> transform;
-
-            if (transform == 'y') {
-                int option;
-                cout << "1. Translate\n2. Scale\n3. Rotate\n";
-                cin >> option;
-
-                if (option == 1) {
-                    double dx, dy, dz;
-                    cout << "Enter translation values (dx dy dz): ";
-                    cin >> dx >> dy >> dz;
-                    polyline.translate(dx, dy, dz);
-                } else if (option == 2) {
-                    double sx, sy, sz;
-                    cout << "Enter scaling factors (sx sy sz): ";
-                    cin >> sx >> sy >> sz;
-                    polyline.scale(sx, sy, sz);
-                } else if (option == 3) {
-                    double angle;
-                    char axis;
-                    cout << "Enter rotation angle and axis (x/y/z): ";
-                    cin >> angle >> axis;
-                    polyline.rotate(angle, axis);
-                }
-            }
-
-            polyline.plotPolyline("data/polyline_transformed.dat");
-        
-        } else if (choice == 8) {
-            // 3D line
-            Line3D line;
-            double x1, y1, z1, x2, y2, z2;
-            cout << "Enter first point (x1 y1 z1): ";
-            cin >> x1 >> y1 >> z1;
-            cout << "Enter second point (x2 y2 z2): ";
-            cin >> x2 >> y2 >> z2;
-
-            line.setPoints(x1, y1, z1, x2, y2, z2);
-            string filename = "data/line3D.dat";
-            line.plotLine(filename);
-
-            char transform;
-            cout << "Do you want to apply transformations? (y/n): ";
-            cin >> transform;
-
-            if (transform == 'y') {
-                int option;
-                cout << "1. Translate\n2. Scale\n3. Rotate\n";
-                cin >> option;
-
-                if (option == 1) {
-                    double dx, dy, dz;
-                    cout << "Enter translation values (dx dy dz): ";
-                    cin >> dx >> dy >> dz;
-                    line.translate(dx, dy, dz);
-                } else if (option == 2) {
-                    double sx, sy, sz;
-                    cout << "Enter scaling factors (sx sy sz): ";
-                    cin >> sx >> sy >> sz;
-                    line.scale(sx, sy, sz);
-                } else if (option == 3) {
-                    double angle;
-                    char axis;
-                    cout << "Enter rotation angle and axis (x/y/z): ";
-                    cin >> angle >> axis;
-                    line.rotate(angle, axis);
-                }
-            }
-
-            line.plotLine("data/line3D_transformed.dat");
+            bezier->translate(x, y, z);
+            scene.addShape(bezier);
+        } else if (subChoice == 7) {
+            double x, y, z, x1, y1, z1, x2, y2, z2;
+            cout << "Enter coordinates (x, y, z) where you want to plot the line: ";
+            cin >> x >> y >> z;
+            cout << "Enter endpoints (x1 y1 z1) and (x2 y2 z2): ";
+            cin >> x1 >> y1 >> z1 >> x2 >> y2 >> z2;
+            auto line = make_shared<Line3D>();
+            line->setPoints(x1, y1, z1, x2, y2, z2);
+            line->translate(x, y, z);
+            scene.addShape(line);
         }
-        
-        else {
-            cout << "Invalid choice!\n";
+
+        if (subChoice != 0) {
+            cout << "Do you want to add more shapes? (1 for Yes, 0 for No): ";
+            cin >> subChoice;
         }
+    } while (subChoice != 0);
+
+    scene.plotScene("data/scene.dat");
+}
+
+int main() {
+    map<int, function<void()>> handlers = {
+        {1, handleCuboid},
+        {2, handleSphere},
+        {3, handleTriangle},
+        {4, handleCylinder},
+        {5, handlePolygon},
+        {6, handleBezier},
+        {7, handleLine3D},
+        {8, handleScene}
+    };
+
+    menu();
+    int choice;
+    cin >> choice;
+
+    if (handlers.find(choice) != handlers.end()) {
+        handlers[choice]();
+    } else {
+        cout << "Invalid choice!\n";
     }
 
     return 0;

@@ -1,29 +1,28 @@
 #ifndef CYLINDER_H
 #define CYLINDER_H
 
-#include <iostream>
 #include <vector>
-#include <fstream>
-#include <cmath>
+#include <string>
+#include "shape.h"
 
-using namespace std;
-
-class Cylinder {
+class Cylinder : public Shape {
 private:
-    double radius, height;
-    int resolution; // Number of points in the circular base
-    vector<vector<double>> vertices;
+    double radius;
+    double height;
+    int resolution;
+    std::vector<std::vector<double>> vertices;
+
+    void generateVertices();
 
 public:
     Cylinder(double r, double h, int res);
-    
-    void generateVertices();
-    void saveToFile(const string &filename);
-    void plotCylinder(const string &filename);
-    void translate(double dx, double dy, double dz);
-    void scale(double sx, double sy, double sz);
-    void rotate(double angle, char axis);
 
+    void plot(const std::string& filename) const override; // Override plot method
+    void saveToFile(const std::string& filename) const override;
+
+    void translate(double dx, double dy, double dz);
+    void rotate(double angle, char axis);
+    void scale(double sx, double sy, double sz);
 };
 
-#endif
+#endif // CYLINDER_H

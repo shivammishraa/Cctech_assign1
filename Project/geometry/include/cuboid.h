@@ -3,24 +3,22 @@
 
 #include <vector>
 #include <string>
+#include "shape.h"
 
-using namespace std;
-
-class Cuboid {
+class Cuboid : public Shape {
 private:
-    vector<vector<double>> vertices; // Stores cuboid vertices
+    std::vector<std::vector<double>> vertices; // Stores cuboid vertices
+   
+
 public:
     Cuboid(double length, double width, double height);
-    void plotCuboid(const string &filename);
-    
+
+    void plot(const std::string& filename) const override; // Override plot method
+    void saveToFile(const std::string& filename) const override;
+
     void translate(double dx, double dy, double dz);
     void scale(double sx, double sy, double sz);
     void rotate(double angle, char axis);
-
-    void saveToFile(const string &filename);
-    void loadFromFile(const string &filename);
-
-    
 };
 
 #endif // CUBOID_H

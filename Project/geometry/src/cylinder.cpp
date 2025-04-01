@@ -27,53 +27,47 @@ void Cylinder::generateVertices() {
     }
 }
 
-void Cylinder::saveToFile(const string &filename) {
+void Cylinder::saveToFile(const string &filename) const {
     ofstream file(filename, ios::app); // Open in append mode
     if (!file) {
         cerr << "Error: Cannot open file for writing.\n";
         return;
     }
 
-    cout << "Writing cylinder edges to file: " << filename << endl;
-
     // Write bottom circle edges
     for (int i = 0; i < resolution; i++) {
         int next = (i + 1) % resolution;
         file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n";
-        file << vertices[next][0] << " " << vertices[next][1] << " " << vertices[next][2] << "\n\n";
+        file << vertices[next][0] << " " << vertices[next][1] << " " << vertices[next][2] << "\n";
     }
-
+   file<<"\n";
     // Write top circle edges
     for (int i = resolution; i < 2 * resolution; i++) {
         int next = (i + 1) % resolution + resolution;
         file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n";
-        file << vertices[next][0] << " " << vertices[next][1] << " " << vertices[next][2] << "\n\n";
+        file << vertices[next][0] << " " << vertices[next][1] << " " << vertices[next][2] << "\n";
     }
 
     // Write vertical edges
-    for (int i = 0; i < resolution; i++) {
-        file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n";
-        file << vertices[i + resolution][0] << " " << vertices[i + resolution][1] << " " << vertices[i + resolution][2] << "\n\n";
-    }
+    // for (int i = 0; i < resolution; i++) {
+    //     file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n\n";
+    //     file << vertices[i + resolution][0] << " " << vertices[i + resolution][1] << " " << vertices[i + resolution][2] << "\n\n";
+    // }
 
     file.close();
-    cout << "Finished writing cylinder edges to file." << endl;
 }
 
-void Cylinder::plotCylinder(const string &filename) {
+void Cylinder::plot(const string &filename) const {
     saveToFile(filename);
 
-    ofstream gnuplot("plot.gnu");
-    if (!gnuplot) {
-        cerr << "Error: Cannot open GNUPlot script.\n";
-        return;
-    }
-
-    gnuplot << "splot '" << filename << "' with lines pointtype 7 linecolor 'black' linewidth 2\n";
-    gnuplot << "pause -1\n";
-    gnuplot.close();
-
-    system("gnuplot plot.gnu");
+    string command = 
+        "gnuplot -p -e \""
+        "set terminal wxt; "
+        "set xlabel 'X'; "
+        "set ylabel 'Y'; "
+        "set zlabel 'Z'; "
+        "splot '" + filename + "' with linespoints pointtype 7 linecolor 'black'\"";
+    system(command.c_str());
 }
 
 void Cylinder::translate(double dx, double dy, double dz) {

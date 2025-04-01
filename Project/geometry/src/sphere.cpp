@@ -30,7 +30,7 @@ Sphere::Sphere(double r, int seg) : radius(r), segments(seg) {
     cout << "Generated " << vertices.size() << " vertices for the sphere." << endl;
 }
 
-void Sphere::plotSphere(const string& filename) {
+void Sphere::plot(const string& filename) const { // Renamed from plotSphere to plot
     ofstream file(filename);
     for (auto& v : vertices) {
         file << v[0] << " " << v[1] << " " << v[2] << "\n";

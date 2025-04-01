@@ -3,22 +3,28 @@
 
 #include <vector>
 #include <string>
+#include "shape.h"
 
 using namespace std;
 
-class Bezier {
+class Bezier : public Shape {
 private:
     vector<vector<double>> controlPoints;
 
 public:
     Bezier();
+
+    void plot(const string& filename) const override; // Override plot method
+    void saveToFile(const string& filename) const override;
+
     void addControlPoint(double x, double y, double z);
-    void plotBezier(const string& filename);
-    void translate(double dx, double dy, double dz); // Using Eigen
-    void scale(double sx, double sy, double sz);
+    void translate(double dx, double dy, double dz);
     void rotate(double angle, char axis);
+    void scale(double sx, double sy, double sz);
+
+    // Additional methods
     vector<vector<double>> calculateBezierCurve(int numSegments) const;
-    void saveToFile(const std::string& filename) const;
+    void plotBezier(const string& filename) const;
 };
 
-#endif
+#endif // BEZIER_H

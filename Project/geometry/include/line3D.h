@@ -3,23 +3,25 @@
 
 #include <vector>
 #include <string>
+#include "shape.h"
 
-using namespace std;
-
-class Line3D {
+class Line3D : public Shape {
 private:
-    vector<vector<double>> points; // Stores two points (x, y, z)
+    std::vector<std::vector<double>> points;
 
 public:
-    Line3D(); // Constructor
+    Line3D();
+
+    void plot(const std::string& filename) const override; // Override plot method
+    void saveToFile(const std::string& filename) const override;
 
     void setPoints(double x1, double y1, double z1, double x2, double y2, double z2);
-    void plotLine(const string &filename);
-
     void translate(double dx, double dy, double dz);
     void scale(double sx, double sy, double sz);
     void rotate(double angle, char axis);
-    void saveToFile(const std::string& filename) const;
+
+    // Additional method
+    void plotLine(const std::string& filename) const; // Specific plot method
 };
 
 #endif // LINE3D_H

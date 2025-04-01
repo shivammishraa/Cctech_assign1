@@ -39,7 +39,6 @@ public:
     }
 };
 
-
 int binomialCoeff(int n, int k) {
     if (k < 0 || k > n) {
         throw invalid_argument("Invalid values for n and k in binomialCoeff");
@@ -61,7 +60,6 @@ Bezier::Bezier() {
     controlPoints = {};
 }
 
-// Bezier class implementation
 void Bezier::addControlPoint(double x, double y, double z) {
     controlPoints.push_back({x, y, z});
 }
@@ -85,7 +83,7 @@ vector<vector<double>> Bezier::calculateBezierCurve(int numSegments) const {
     return curve;
 }
 
-void Bezier::plotBezier(const string& filename) {
+void Bezier::plotBezier(const string& filename) const {
     vector<vector<double>> curve = calculateBezierCurve(100);
     ofstream file(filename);
 
@@ -151,14 +149,14 @@ void Bezier::saveToFile(const string &filename) const {
         return;
     }
 
-    cout << "Writing Bezier control points to file: " << filename << endl; // Debugging statement
-
-    // Write Bezier control points
     for (size_t i = 0; i < controlPoints.size() - 1; i++) {
         file << controlPoints[i][0] << " " << controlPoints[i][1] << " " << controlPoints[i][2] << "\n";
         file << controlPoints[i + 1][0] << " " << controlPoints[i + 1][1] << " " << controlPoints[i + 1][2] << "\n\n";
     }
 
     file.close();
-    cout << "Finished writing Bezier control points to file." << endl; // Debugging statement
+}
+
+void Bezier::plot(const std::string& filename) const {
+    plotBezier(filename); // Use the existing plotBezier method
 }

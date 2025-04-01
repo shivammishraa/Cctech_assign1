@@ -61,7 +61,7 @@ $(GEOM_SRC_DIR)/scene.o: $(GEOM_SRC_DIR)/scene.cpp $(GEOM_INC_DIR)/scene.h
 
 # Clean build files
 clean:
-	rm -f $(SRC_DIR)/*.o $(GEOM_SRC_DIR)/*.o $(TARGET)
+	rm -f $(SRC_DIR)/*.o $(GEOM_SRC_DIR)/*.o $(TARGET) data/*.dat 
 
 # Build and run the project
 run: $(TARGET)

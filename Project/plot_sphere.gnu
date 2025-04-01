@@ -9,4 +9,4 @@ set ylabel 'Y'
 set zlabel 'Z'
 set view equal xyz
 r = 5
-splot 'data/transformed_sphere.dat' with points pointtype 7 linecolor 'blue'
+splot 'data/original_sphere.dat' with linespoints pointtype 7 linecolor 'blue'

@@ -29,7 +29,7 @@ void Polygon::calculateCentroid(double &cx, double &cy, double &cz) {
 }
 
 // plotting the polygon
-void Polygon::plotPolygon(const string &filename) {
+void Polygon::plotPolygon(const string &filename) const { // Marked as const
     ofstream file(filename);
     if (!file) {
         cerr << "Error opening file: " << filename << "\n";
@@ -96,16 +96,17 @@ void Polygon::rotate(double angle, char axis) {
     }
 }
 
-void Polygon::saveToFile(const string &filename) const {
+void Polygon::plot(const std::string& filename) const {
+    plotPolygon(filename); // Use the existing plotPolygon method
+}
+
+void Polygon::saveToFile(const std::string& filename) const {
     ofstream file(filename, ios::app); // Open in append mode
     if (!file) {
         cerr << "Error: Cannot open file for writing.\n";
         return;
     }
 
-    cout << "Writing polygon vertices to file: " << filename << endl; // Debugging statement
-
-    // Write polygon edges
     for (size_t i = 0; i < vertices.size(); i++) {
         size_t next = (i + 1) % vertices.size();
         file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << "\n";
@@ -113,5 +114,4 @@ void Polygon::saveToFile(const string &filename) const {
     }
 
     file.close();
-    cout << "Finished writing polygon vertices to file." << endl; // Debugging statement
 }

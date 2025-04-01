@@ -3,21 +3,22 @@
 
 #include <vector>
 #include <string>
+#include "shape.h"
 
-using namespace std;
-
-class Sphere {
+class Sphere : public Shape {
 private:
     double radius;
     int segments;
-    vector<vector<double>> vertices;
+    std::vector<std::vector<double>> vertices;
 
 public:
     Sphere(double r, int seg);
-    void plotSphere(const string& filename);
+
+    void plot(const std::string& filename) const override; // Override plot method
+    void saveToFile(const std::string& filename) const override;
+
     void translate(double dx, double dy, double dz);
     void scale(double factor);
-    void saveToFile(const string& filename) const;
 };
 
-#endif
+#endif // SPHERE_H
