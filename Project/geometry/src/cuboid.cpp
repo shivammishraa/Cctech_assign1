@@ -47,7 +47,7 @@ void Cuboid::rotate(double angle, char axis) {
 }
 
 void Cuboid::saveToFile(const string &filename) const {
-    ofstream file(filename, ios::app); 
+    ofstream file(filename, ios::out); // Open in overwrite mode (ios::out)
     if (!file) {
         cerr << "Error: Cannot open file for writing.\n";
         return;
@@ -61,10 +61,10 @@ void Cuboid::saveToFile(const string &filename) const {
 
     for (int i = 0; i < 12; i++) {
         int v1 = edges[i][0], v2 = edges[i][1];
-        file << vertices[v1][0] << " " << vertices[v1][1] << " " << vertices[v1][2] << "\n\n";
+        file << vertices[v1][0] << " " << vertices[v1][1] << " " << vertices[v1][2] << "\n";
         file << vertices[v2][0] << " " << vertices[v2][1] << " " << vertices[v2][2] << "\n\n";
     }
-         
+
     // file<<vertices[0][0]<<" "<<vertices[0][1]<<" "<<vertices[0][2]<<"\n";
     // file<<vertices[1][0]<<" "<<vertices[1][1]<<" "<<vertices[1][2]<<"\n";
     // file<<vertices[2][0]<<" "<<vertices[2][1]<<" "<<vertices[2][2]<<"\n";
@@ -77,7 +77,7 @@ void Cuboid::saveToFile(const string &filename) const {
     // file<<vertices[7][0]<<" "<<vertices[7][1]<<" "<<vertices[7][2]<<"\n";
     // file<<vertices[4][0]<<" "<<vertices[4][1]<<" "<<vertices[4][2]<<"\n";
 
-    
+
     file.close();
 }
 

@@ -54,14 +54,12 @@ void Sphere::plot(const string& filename) const { // Renamed from plotSphere to 
     system("gnuplot -p plot_sphere.gnu");
 }
 
-void Sphere::saveToFile(const string& filename) const {
-    ofstream file(filename, ios::app); // Open in append mode
+void Sphere::saveToFile(const string &filename) const {
+    ofstream file(filename, ios::out); // Open in overwrite mode (ios::out)
     if (!file) {
         cerr << "Error: Cannot open file for writing.\n";
         return;
     }
-
-    cout << "Writing sphere vertices to file: " << filename << endl;
 
     int numLatitudes = segments + 1;
     int numLongitudes = segments + 1;
@@ -75,11 +73,7 @@ void Sphere::saveToFile(const string& filename) const {
         file << "\n"; // Separate latitude lines
     }
 
-    // Add a blank line to separate the sphere's data from other shapes
-    file << "\n";
-
     file.close();
-    cout << "Finished writing sphere vertices to file." << endl;
 }
 
 void Sphere::translate(double dx, double dy, double dz) {
