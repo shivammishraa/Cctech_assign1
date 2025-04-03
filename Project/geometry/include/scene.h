@@ -22,4 +22,4 @@ public:
     vector<shared_ptr<Shape>>& getShapes(); // Get reference to the list of shapes
 };
 
-#endif // SCENE_H
+#endif 

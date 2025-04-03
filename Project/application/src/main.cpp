@@ -1,7 +1,7 @@
 #include <iostream>
 #include <map>
 #include <functional>
-#include "../include/shape_handlers.h" // Include the header file for handle functions
+#include "../../geometry/include/shape_handlers.h" 
 
 using namespace std;
 
@@ -15,6 +15,7 @@ void menu() {
     cout << "6. Bezier Curve\n";
     cout << "7. 3D Line\n";
     cout << "8. Scene (Combination of Shapes)\n";
+    cout << "9. Triangular Shapes (STL Files)\n"; 
     cout << "Enter choice: ";
 }
 
@@ -27,7 +28,8 @@ int main() {
         {5, handlePolygon},
         {6, handleBezier},
         {7, handleLine3D},
-        {8, handleScene}
+        {8, handleScene},
+        {9, handleTriangularShapes}
     };
 
     menu();

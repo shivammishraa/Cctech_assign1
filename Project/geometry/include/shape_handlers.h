@@ -9,5 +9,6 @@ void handlePolygon();
 void handleBezier();
 void handleLine3D();
 void handleScene();
+void handleTriangularShapes();
 
-#endif // SHAPE_HANDLERS_H
+#endif 

@@ -28,7 +28,7 @@ void Cylinder::generateVertices() {
 }
 
 void Cylinder::saveToFile(const string &filename) const {
-    ofstream file(filename, ios::out); // Open in overwrite mode (ios::out)
+    ofstream file(filename, ios::app); // Open in overwrite mode (ios::out)
     if (!file) {
         cerr << "Error: Cannot open file for writing.\n";
         return;

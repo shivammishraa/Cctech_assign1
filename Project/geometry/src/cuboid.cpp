@@ -47,7 +47,7 @@ void Cuboid::rotate(double angle, char axis) {
 }
 
 void Cuboid::saveToFile(const string &filename) const {
-    ofstream file(filename, ios::out); // Open in overwrite mode (ios::out)
+    ofstream file(filename, ios::app); 
     if (!file) {
         cerr << "Error: Cannot open file for writing.\n";
         return;

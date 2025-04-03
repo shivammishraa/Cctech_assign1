@@ -16,7 +16,7 @@ vector<shared_ptr<Shape>>& Scene::getShapes() {
 
 void Scene::plotScene(const string& filename) const {
     // Clear the file initially
-    ofstream clearFile(filename, ios::out);
+    ofstream clearFile(filename, ios::app);
     if (!clearFile) {
         cerr << "Error opening file: " << filename << endl;
         return;

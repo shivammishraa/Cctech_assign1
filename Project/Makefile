@@ -1,7 +1,6 @@
 # Compiler
 CXX = g++
-CXXFLAGS = -Wall -std=c++11 -Igeometry/include -Iapplication/include
-
+CXXFLAGS = -Wall -std=c++11 -Igeometry/include 
 # Directories
 BIN_DIR = bin
 DATA_DIR = data
@@ -10,7 +9,7 @@ GEOM_SRC_DIR = geometry/src
 GEOM_INC_DIR = geometry/include
 
 # Object files
-OBJ = $(SRC_DIR)/main.o $(SRC_DIR)/shape_handlers.o $(GEOM_SRC_DIR)/cuboid.o $(GEOM_SRC_DIR)/cylinder.o $(GEOM_SRC_DIR)/sphere.o $(GEOM_SRC_DIR)/polyline.o $(GEOM_SRC_DIR)/bezier.o $(GEOM_SRC_DIR)/triangle.o $(GEOM_SRC_DIR)/polygon.o $(GEOM_SRC_DIR)/line3D.o $(GEOM_SRC_DIR)/scene.o
+OBJ = $(SRC_DIR)/main.o $(GEOM_SRC_DIR)/shape_handlers.o $(GEOM_SRC_DIR)/stl_shape.o $(GEOM_SRC_DIR)/cuboid.o $(GEOM_SRC_DIR)/cylinder.o $(GEOM_SRC_DIR)/sphere.o $(GEOM_SRC_DIR)/polyline.o $(GEOM_SRC_DIR)/bezier.o $(GEOM_SRC_DIR)/triangle.o $(GEOM_SRC_DIR)/polygon.o $(GEOM_SRC_DIR)/line3D.o $(GEOM_SRC_DIR)/scene.o
 
 # Executable
 TARGET = $(BIN_DIR)/shape_plotter
@@ -20,12 +19,12 @@ $(TARGET): $(OBJ)
 	$(CXX) $(OBJ) -o $(TARGET) -lm
 
 # Compile main.cpp
-$(SRC_DIR)/main.o: $(SRC_DIR)/main.cpp $(GEOM_INC_DIR)/cuboid.h $(GEOM_INC_DIR)/cylinder.h $(GEOM_INC_DIR)/polyline.h $(GEOM_INC_DIR)/bezier.h $(GEOM_INC_DIR)/triangle.h $(GEOM_INC_DIR)/polygon.h $(GEOM_INC_DIR)/line3D.h $(GEOM_INC_DIR)/scene.h application/include/shape_handlers.h
+$(SRC_DIR)/main.o: $(SRC_DIR)/main.cpp $(GEOM_INC_DIR)/cuboid.h $(GEOM_INC_DIR)/cylinder.h $(GEOM_INC_DIR)/polyline.h $(GEOM_INC_DIR)/bezier.h $(GEOM_INC_DIR)/triangle.h $(GEOM_INC_DIR)/polygon.h $(GEOM_INC_DIR)/line3D.h $(GEOM_INC_DIR)/scene.h geometry/include/shape_handlers.h
 	$(CXX) $(CXXFLAGS) -c $(SRC_DIR)/main.cpp -o $(SRC_DIR)/main.o
 
 # Compile shape_handlers.cpp
-$(SRC_DIR)/shape_handlers.o: $(SRC_DIR)/shape_handlers.cpp application/include/shape_handlers.h $(GEOM_INC_DIR)/cuboid.h $(GEOM_INC_DIR)/cylinder.h $(GEOM_INC_DIR)/sphere.h $(GEOM_INC_DIR)/triangle.h $(GEOM_INC_DIR)/polygon.h $(GEOM_INC_DIR)/line3D.h $(GEOM_INC_DIR)/scene.h
-	$(CXX) $(CXXFLAGS) -c $(SRC_DIR)/shape_handlers.cpp -o $(SRC_DIR)/shape_handlers.o
+$(GEOM_SRC_DIR)/shape_handlers.o: $(GEOM_SRC_DIR)/shape_handlers.cpp geometry/include/shape_handlers.h $(GEOM_INC_DIR)/cuboid.h $(GEOM_INC_DIR)/cylinder.h $(GEOM_INC_DIR)/sphere.h $(GEOM_INC_DIR)/triangle.h $(GEOM_INC_DIR)/polygon.h $(GEOM_INC_DIR)/line3D.h $(GEOM_INC_DIR)/scene.h
+	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/shape_handlers.cpp -o $(GEOM_SRC_DIR)/shape_handlers.o
 
 # Compile cuboid.cpp
 $(GEOM_SRC_DIR)/cuboid.o: $(GEOM_SRC_DIR)/cuboid.cpp $(GEOM_INC_DIR)/cuboid.h
@@ -62,6 +61,10 @@ $(GEOM_SRC_DIR)/line3D.o: $(GEOM_SRC_DIR)/line3D.cpp $(GEOM_INC_DIR)/line3D.h
 # Compile scene.cpp
 $(GEOM_SRC_DIR)/scene.o: $(GEOM_SRC_DIR)/scene.cpp $(GEOM_INC_DIR)/scene.h
 	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/scene.cpp -o $(GEOM_SRC_DIR)/scene.o
+
+# Compile stl_shape.cpp
+$(GEOM_SRC_DIR)/stl_shape.o: $(GEOM_SRC_DIR)/stl_shape.cpp $(GEOM_INC_DIR)/stl_shape.h
+	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/stl_shape.cpp -o $(GEOM_SRC_DIR)/stl_shape.o
 
 # Clean build files
 clean:

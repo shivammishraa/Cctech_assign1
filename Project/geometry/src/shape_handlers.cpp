@@ -1,6 +1,7 @@
 #include "../include/shape_handlers.h" 
 #include <iostream>
 #include <memory>
+#include "stl_shape.h"
 #include "cuboid.h"
 #include "sphere.h"
 #include "triangle.h"
@@ -411,4 +412,23 @@ void handleScene() {
     } while (subChoice != 0);
 
     scene.plotScene("data/scene.dat");
+}
+
+void handleTriangularShapes() {
+    cout << "Choose a triangular shape:\n";
+    cout << "1. Cube\n";
+    cout << "2. Sphere\n";
+    cout << "Enter choice: ";
+    int choice;
+    cin >> choice;
+
+    if (choice == 1) {
+        STLShape cube("geometry/stlFiles/cube.stl");
+        cube.plot("data/triangular_cube.dat"); // Corrected .dat file name
+    } else if (choice == 2) {
+        STLShape sphere("geometry/stlFiles/sphere.stl");
+        sphere.plot("data/triangular_sphere.dat"); // Corrected .dat file name
+    } else {
+        cout << "Invalid choice!\n";
+    }
 }
