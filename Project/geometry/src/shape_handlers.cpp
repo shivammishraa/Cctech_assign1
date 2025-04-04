@@ -1,5 +1,6 @@
 #include "../include/shape_handlers.h" 
 #include <iostream>
+#include <fstream>
 #include <memory>
 #include "stl_shape.h"
 #include "cuboid.h"
@@ -10,6 +11,7 @@
 #include "bezier.h"
 #include "line3D.h"
 #include "scene.h"
+#include "objToStl.h"
 
 using namespace std;
 
@@ -414,25 +416,53 @@ void handleScene() {
     scene.plotScene("data/scene.dat");
 }
 
-void handleTriangularShapes() {
-    cout << "Choose a triangular shape:\n";
-    cout << "1. Cube\n";
-    cout << "2. Sphere\n";
-    cout << "3. BridgeStoneArena\n";
-    cout << "Enter choice: ";
-    int choice;
-    cin >> choice;
+void handleTriangularShapes(const string& filename) {
+    string filepath = filename; // No need to prepend "assets/" again
 
-    if (choice == 1) {
-        STLShape cube("geometry/stlFiles/cube.stl");
-        cube.plot("data/triangular_cube.dat");
-    } else if (choice == 2) {
-        STLShape sphere("geometry/stlFiles/sphere.stl");
-        sphere.plot("data/triangular_sphere.dat");
-    } else if (choice == 3) {
-        STLShape sphere("geometry/stlFiles/BridgeStoneArena.stl");
-        sphere.plot("data/BridgeStoneArena.dat");
-    } else {
-        cout << "Invalid choice!\n";
+    // Debugging output
+    cout << "Debug: Checking file at path: " << filepath << endl;
+
+    ifstream fileCheck(filepath);
+    if (!fileCheck) {
+        cerr << "Error: STL file '" << filename << "' not found!\n";
+        return;
     }
+    fileCheck.close();
+
+    cout << "Plotting STL file: " << filename << "\n";
+
+    STLShape shape(filepath);
+
+    // Fix the .dat output path
+    string cleanFilename = filename.substr(filename.find_last_of("/\\") + 1); 
+    string outputDataFile = "data/" + cleanFilename.substr(0, cleanFilename.rfind(".")) + ".dat";
+
+    cout << "Debug: Saving parsed STL data to: " << outputDataFile << endl;
+    
+    shape.plot(outputDataFile);
+}
+
+
+void handleOBJtoSTL(const string& filename) {
+    string objPath = "assets/" + filename;
+    string stlOutput = "assets/" + filename.substr(0, filename.rfind(".")) + ".stl";
+
+    ifstream objCheck(objPath);
+    if (!objCheck) {
+        cerr << "Error: OBJ file '" << filename << "' not found!\n";
+        return;
+    }
+    objCheck.close();
+
+    cout << "Converting OBJ to STL: " << filename << " -> " << stlOutput << "\n";
+
+    ObjToStlConverter converter;
+    
+    if (converter.convert(objPath, stlOutput)) {
+        cout << "Conversion successful! STL file saved as: " << stlOutput << "\n";
+    } else {
+        cerr << "Error: Conversion failed.\n";
+    }
+    cout << "Debug: STL conversion finished, no auto-plotting should happen.\n";
+
 }

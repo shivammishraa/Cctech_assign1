@@ -1,6 +1,7 @@
 # Compiler
 CXX = g++
 CXXFLAGS = -Wall -std=c++11 -Igeometry/include 
+
 # Directories
 BIN_DIR = bin
 DATA_DIR = data
@@ -9,7 +10,19 @@ GEOM_SRC_DIR = geometry/src
 GEOM_INC_DIR = geometry/include
 
 # Object files
-OBJ = $(SRC_DIR)/main.o $(GEOM_SRC_DIR)/shape_handlers.o $(GEOM_SRC_DIR)/stl_shape.o $(GEOM_SRC_DIR)/cuboid.o $(GEOM_SRC_DIR)/cylinder.o $(GEOM_SRC_DIR)/sphere.o $(GEOM_SRC_DIR)/polyline.o $(GEOM_SRC_DIR)/bezier.o $(GEOM_SRC_DIR)/triangle.o $(GEOM_SRC_DIR)/polygon.o $(GEOM_SRC_DIR)/line3D.o $(GEOM_SRC_DIR)/scene.o
+OBJ = $(SRC_DIR)/main.o \
+      $(GEOM_SRC_DIR)/shape_handlers.o \
+      $(GEOM_SRC_DIR)/stl_shape.o \
+      $(GEOM_SRC_DIR)/cuboid.o \
+      $(GEOM_SRC_DIR)/cylinder.o \
+      $(GEOM_SRC_DIR)/sphere.o \
+      $(GEOM_SRC_DIR)/polyline.o \
+      $(GEOM_SRC_DIR)/bezier.o \
+      $(GEOM_SRC_DIR)/triangle.o \
+      $(GEOM_SRC_DIR)/polygon.o \
+      $(GEOM_SRC_DIR)/line3D.o \
+      $(GEOM_SRC_DIR)/scene.o \
+      $(GEOM_SRC_DIR)/objToStl.o  # ✅ Now ensuring objToStl.o is included
 
 # Executable
 TARGET = $(BIN_DIR)/shape_plotter
@@ -18,12 +31,33 @@ TARGET = $(BIN_DIR)/shape_plotter
 $(TARGET): $(OBJ)
 	$(CXX) $(OBJ) -o $(TARGET) -lm
 
+# Compile objToStl.cpp ✅ This is the missing part you mentioned
+$(GEOM_SRC_DIR)/objToStl.o: $(GEOM_SRC_DIR)/objToStl.cpp $(GEOM_INC_DIR)/objToStl.h
+	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/objToStl.cpp -o $(GEOM_SRC_DIR)/objToStl.o
+
 # Compile main.cpp
-$(SRC_DIR)/main.o: $(SRC_DIR)/main.cpp $(GEOM_INC_DIR)/cuboid.h $(GEOM_INC_DIR)/cylinder.h $(GEOM_INC_DIR)/polyline.h $(GEOM_INC_DIR)/bezier.h $(GEOM_INC_DIR)/triangle.h $(GEOM_INC_DIR)/polygon.h $(GEOM_INC_DIR)/line3D.h $(GEOM_INC_DIR)/scene.h geometry/include/shape_handlers.h
+$(SRC_DIR)/main.o: $(SRC_DIR)/main.cpp \
+                   $(GEOM_INC_DIR)/cuboid.h \
+                   $(GEOM_INC_DIR)/cylinder.h \
+                   $(GEOM_INC_DIR)/polyline.h \
+                   $(GEOM_INC_DIR)/bezier.h \
+                   $(GEOM_INC_DIR)/triangle.h \
+                   $(GEOM_INC_DIR)/polygon.h \
+                   $(GEOM_INC_DIR)/line3D.h \
+                   $(GEOM_INC_DIR)/scene.h \
+                   $(GEOM_INC_DIR)/objToStl.h  # ✅ Ensure objToStl.h is included
 	$(CXX) $(CXXFLAGS) -c $(SRC_DIR)/main.cpp -o $(SRC_DIR)/main.o
 
 # Compile shape_handlers.cpp
-$(GEOM_SRC_DIR)/shape_handlers.o: $(GEOM_SRC_DIR)/shape_handlers.cpp geometry/include/shape_handlers.h $(GEOM_INC_DIR)/cuboid.h $(GEOM_INC_DIR)/cylinder.h $(GEOM_INC_DIR)/sphere.h $(GEOM_INC_DIR)/triangle.h $(GEOM_INC_DIR)/polygon.h $(GEOM_INC_DIR)/line3D.h $(GEOM_INC_DIR)/scene.h
+$(GEOM_SRC_DIR)/shape_handlers.o: $(GEOM_SRC_DIR)/shape_handlers.cpp $(GEOM_INC_DIR)/shape_handlers.h \
+                                  $(GEOM_INC_DIR)/cuboid.h \
+                                  $(GEOM_INC_DIR)/cylinder.h \
+                                  $(GEOM_INC_DIR)/sphere.h \
+                                  $(GEOM_INC_DIR)/triangle.h \
+                                  $(GEOM_INC_DIR)/polygon.h \
+                                  $(GEOM_INC_DIR)/line3D.h \
+                                  $(GEOM_INC_DIR)/scene.h \
+                                  $(GEOM_INC_DIR)/objToStl.h  # ✅ Ensure objToStl.h is included
 	$(CXX) $(CXXFLAGS) -c $(GEOM_SRC_DIR)/shape_handlers.cpp -o $(GEOM_SRC_DIR)/shape_handlers.o
 
 # Compile cuboid.cpp
@@ -68,8 +102,9 @@ $(GEOM_SRC_DIR)/stl_shape.o: $(GEOM_SRC_DIR)/stl_shape.cpp $(GEOM_INC_DIR)/stl_s
 
 # Clean build files
 clean:
-	rm -f $(SRC_DIR)/*.o $(GEOM_SRC_DIR)/*.o $(TARGET) data/*.dat 
+	rm -rf $(SRC_DIR)/*.o $(GEOM_SRC_DIR)/*.o $(TARGET) $(DATA_DIR)/*.dat $(BIN_DIR)/*
 
 # Build and run the project
 run: $(TARGET)
-	./$(TARGET)
+	@echo "Starting program..."
+	@/usr/bin/time -f "\nTotal Build Time: %E" ./$(TARGET)

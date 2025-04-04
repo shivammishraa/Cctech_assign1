@@ -1,5 +1,6 @@
 #ifndef SHAPE_HANDLERS_H
 #define SHAPE_HANDLERS_H
+#include <string>
 
 void handleCuboid();
 void handleSphere();
@@ -9,6 +10,6 @@ void handlePolygon();
 void handleBezier();
 void handleLine3D();
 void handleScene();
-void handleTriangularShapes();
-
-#endif 
+void handleTriangularShapes(const std::string& filename);
+void handleOBJtoSTL(const std::string& filename); // New function to handle OBJ conversion
+#endif
