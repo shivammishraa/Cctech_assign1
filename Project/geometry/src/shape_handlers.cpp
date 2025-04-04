@@ -418,16 +418,20 @@ void handleTriangularShapes() {
     cout << "Choose a triangular shape:\n";
     cout << "1. Cube\n";
     cout << "2. Sphere\n";
+    cout << "3. BridgeStoneArena\n";
     cout << "Enter choice: ";
     int choice;
     cin >> choice;
 
     if (choice == 1) {
         STLShape cube("geometry/stlFiles/cube.stl");
-        cube.plot("data/triangular_cube.dat"); // Corrected .dat file name
+        cube.plot("data/triangular_cube.dat");
     } else if (choice == 2) {
         STLShape sphere("geometry/stlFiles/sphere.stl");
-        sphere.plot("data/triangular_sphere.dat"); // Corrected .dat file name
+        sphere.plot("data/triangular_sphere.dat");
+    } else if (choice == 3) {
+        STLShape sphere("geometry/stlFiles/BridgeStoneArena.stl");
+        sphere.plot("data/BridgeStoneArena.dat");
     } else {
         cout << "Invalid choice!\n";
     }
