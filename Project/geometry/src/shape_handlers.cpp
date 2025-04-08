@@ -516,8 +516,8 @@ void handleTriangularShapes(const string& filename) {
 
     
         // Save and plot again after transformations
-        shape.saveToFile(outputDataFile);
-        plotWithGnuplot(outputDataFile, "red", 2);
+        // shape.saveToFile(outputDataFile);
+        // plotWithGnuplot(outputDataFile, "red", 2);
     } 
 
 

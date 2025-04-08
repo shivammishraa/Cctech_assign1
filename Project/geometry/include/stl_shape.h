@@ -3,15 +3,16 @@
 
 #include <string>
 #include <vector>
+#include <array>
 
 class STLShape {
 private:
-    std::vector<std::vector<double>> vertices; // Stores (x, y, z) coordinates
+    std::vector<std::array<std::array<double, 3>, 3>> triangles;
 
 public:
-    STLShape(const std::string& filepath); // Constructor to parse the STL file
-    void saveToFile(const std::string& filename) const; // Save vertices to a .dat file
-    void plot(const std::string& filename) const; // Plot the shape using GNUPLOT
+    STLShape(const std::string& filepath);
+    void saveToFile(const std::string& filename) const;
+    void plot(const std::string& filename) const;
 };
 
-#endif 
+#endif

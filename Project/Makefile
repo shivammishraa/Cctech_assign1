@@ -23,9 +23,9 @@ $(TARGET): $(OBJ) $(DLL_TARGET)
 	$(CXX) $(OBJ) -o $(TARGET) -lm -L$(BIN_DIR) -lgeometry
 
 # Compile the DLL
-$(DLL_TARGET): $(GEOM_SRC_DIR)/transform_utils.o $(GEOM_SRC_DIR)/plot_utils.o $(GEOM_SRC_DIR)/objToStl.o $(GEOM_SRC_DIR)/stl_shape.o \
-               $(GEOM_SRC_DIR)/cuboid.o $(GEOM_SRC_DIR)/cylinder.o $(GEOM_SRC_DIR)/sphere.o $(GEOM_SRC_DIR)/polyline.o $(GEOM_SRC_DIR)/bezier.o \
-               $(GEOM_SRC_DIR)/triangle.o $(GEOM_SRC_DIR)/polygon.o $(GEOM_SRC_DIR)/line3D.o $(GEOM_SRC_DIR)/scene.o
+$(DLL_TARGET): $(BIN_DIR)/transform_utils.o $(BIN_DIR)/plot_utils.o $(BIN_DIR)/objToStl.o $(BIN_DIR)/stl_shape.o \
+               $(BIN_DIR)/cuboid.o $(BIN_DIR)/cylinder.o $(BIN_DIR)/sphere.o $(BIN_DIR)/polyline.o $(BIN_DIR)/bezier.o \
+               $(BIN_DIR)/triangle.o $(BIN_DIR)/polygon.o $(BIN_DIR)/line3D.o $(BIN_DIR)/scene.o
 	$(CXX) -shared $(CXXFLAGS) -o $(DLL_TARGET) $^ -Wl,--out-implib,$(LIBRARY)
 
 # Compile source files in application/src to object files in bin/
@@ -39,12 +39,14 @@ $(BIN_DIR)/%.o: $(GEOM_SRC_DIR)/%.cpp
 # Clean build files
 clean:
 	@echo Cleaning up build files...
-	@for %%f in ($(BIN_DIR)\*.o) do del /q /f %%f
-	@for %%f in ($(BIN_DIR)\*.exe) do del /q /f %%f
-	@for %%f in ($(BIN_DIR)\*.dll) do del /q /f %%f
-	@for %%f in ($(BIN_DIR)\*.a) do del /q /f %%f
-	@for %%f in ($(DATA_DIR)\*.dat) do del /q /f %%f
-	@if exist $(BIN_DIR)\libgeometry.a del /q /f $(BIN_DIR)\libgeometry.a
+	-@del /q /f $(BIN_DIR)\*.o 2>nul
+	-@del /q /f $(BIN_DIR)\*.exe 2>nul
+	-@del /q /f $(BIN_DIR)\*.dll 2>nul
+	-@del /q /f $(BIN_DIR)\*.a 2>nul
+	-@del /q /f $(DATA_DIR)\*.dat 2>nul
+	-@if exist $(BIN_DIR)\libgeometry.a del /q /f $(BIN_DIR)\libgeometry.a
+
+
 
 
 # Build and run the project
